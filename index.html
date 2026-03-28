@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>广济桥 · 千年启合 · 交互漫画版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eee4d1;
+            font-family: 'Noto Serif SC', '华文楷体', 'KaiTi', '楷体', 'Times New Roman', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 16px;
+        }
+
+        .comic-book {
+            max-width: 800px;
+            width: 100%;
+            background: #f5ecda;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5), 0 0 0 2px #b59b6b, 0 0 0 6px #4d3e28;
+            border-radius: 32px 32px 20px 20px;
+            overflow: hidden;
+            transform: perspective(1200px);
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            padding: 20px 18px;
+            background: #faf3e2;
+            background-image: radial-gradient(circle at 20% 30%, #f3e5ca 2px, transparent 2px),
+                              radial-gradient(circle at 80% 70%, #e5d6b5 1px, transparent 2px);
+            background-size: 30px 30px;
+            border-bottom: 3px solid #c9af87;
+        }
+
+        .page.active {
+            display: flex;
+            animation: pageFlip 0.5s ease-out;
+        }
+
+        @keyframes pageFlip {
+            from { opacity: 0; transform: rotateY(20deg) translateX(20px); }
+            to { opacity: 1; transform: rotateY(0) translateX(0); }
+        }
+
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            background: #fffef7;
+            border: 3px solid #8f734b;
+            border-radius: 24px;
+            padding: 14px 12px;
+            box-shadow: inset 0 0 10px rgba(255,220,160,0.4), 0 7px 0 #6a4f30;
+            font-size: clamp(14px, 2.5vw, 17px);
+            line-height: 1.45;
+            color: #2f2a1c;
+            overflow: hidden;
+        }
+
+        .panel-large {
+            grid-column: span 2;
+        }
+
+        .panel img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 16px;
+            border: 3px solid #9b7e54;
+            box-shadow: 0 5px 0 #634b2b;
+            margin: 10px 0;
+            cursor: zoom-in;
+            transition: transform 0.2s;
+        }
+        .panel img:hover {
+            transform: scale(1.02);
+        }
+
+        .panel-title {
+            font-weight: 700;
+            background: #b28655;
+            color: #fdf3db;
+            display: inline-block;
+            padding: 4px 20px;
+            border-radius: 40px;
+            font-size: clamp(12px, 2vw, 15px);
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            border: 1px solid #f7d5a0;
+        }
+
+        .sound-effect {
+            font-family: 'Arial Black', 'Impact', sans-serif;
+            color: #b13e1f;
+            font-size: clamp(20px, 4vw, 28px);
+            text-align: right;
+            text-shadow: 3px 3px 0 #ffbf7f, -1px -1px 0 #440000;
+            margin-top: 4px;
+        }
+
+        .interact-zone {
+            background: #d8bc8e;
+            border-radius: 50px 50px 30px 30px;
+            padding: 18px 16px;
+            border: 4px solid #a17f51;
+            margin: 12px 0 16px;
+            box-shadow: inset 0 2px 8px #fff2cf, 0 8px 0 #6b4f2e;
+        }
+
+        .interact-title {
+            font-weight: bold;
+            font-size: clamp(16px, 3vw, 20px);
+            margin-bottom: 16px;
+            color: #1f3b2b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .interact-title::before {
+            content: "🫴";
+            font-size: 26px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 12px 0;
+            background: #f3e5ca;
+            padding: 12px;
+            border-radius: 28px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .comic-btn {
+            background: #fcebd1;
+            border: 3px solid #7b5e38;
+            border-radius: 60px;
+            padding: 10px 20px;
+            font-size: clamp(15px, 2.8vw, 19px);
+            font-weight: 600;
+            color: #352f1d;
+            box-shadow: 0 5px 0 #5f4a2e;
+            cursor: pointer;
+            font-family: inherit;
+            flex: 0 1 auto;
+            min-width: 120px;
+            text-align: center;
+            transition: 0.06s linear, transform 0.2s;
+        }
+        .comic-btn:hover {
+            transform: scale(1.05);
+        }
+        .comic-btn:active {
+            transform: translateY(5px);
+            box-shadow: none;
+        }
+
+        .knowledge-card {
+            background: #f3e5ca;
+            border-radius: 32px;
+            border: 4px solid #b59464;
+            padding: 18px 16px;
+            margin-top: 20px;
+            display: none;
+            font-size: clamp(14px, 2.5vw, 17px);
+            box-shadow: 0 6px 0 #7e623b, inset 0 0 0 2px #ffeecc;
+        }
+        .knowledge-card.show {
+            display: block;
+            animation: cardPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes cardPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .speech-bubble {
+            background: #fff5e6;
+            border-radius: 24px;
+            padding: 12px 16px;
+            margin: 10px 0;
+            position: relative;
+            border-left: 8px solid #b28655;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .river-map {
+            background: linear-gradient(135deg, #6c8fb3 0%, #4a6b8a 100%);
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            min-height: 180px;
+            cursor: pointer;
+        }
+        .river-dot {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            background: rgba(255,215,0,0.9);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .river-dot:hover {
+            transform: scale(1.2);
+            background: gold;
+        }
+
+        .boat-drag-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .drag-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .drag-row::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: calc(50% - 60px);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, #b59464, #e8ddc4, #b59464);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .drag-item-container {
+            background: #f0e5d4;
+            border-radius: 28px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 2px solid #d8bc8e;
+        }
+        .drag-ship {
+            background: #f5e8d4;
+            border-radius: 24px;
+            padding: 20px 30px;
+            cursor: grab;
+            text-align: center;
+            transition: all 0.2s ease;
+            border: 3px solid #c9ab7b;
+            box-shadow: 0 6px 0 #b5945c;
+            position: relative;
+        }
+        .drag-ship:active { cursor: grabbing; }
+        .drag-ship.dragging {
+            opacity: 0.6;
+            transform: scale(1.05) translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+            cursor: grabbing;
+        }
+        .drag-ship::after {
+            content: "⋮⋮";
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            font-size: 16px;
+            color: #b5945c;
+            opacity: 0.6;
+        }
+        .drag-ship img {
+            max-width: 100px;
+            height: auto;
+            pointer-events: none;
+        }
+        .drag-ship .ship-label {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #8b6f4c;
+        }
+        .gap-container {
+            background: #e8ddc4;
+            border-radius: 28px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid #d8bc8e;
+            min-width: 180px;
+        }
+        .bridge-gap {
+            background: #cdb894;
+            border-radius: 24px;
+            padding: 20px 30px;
+            text-align: center;
+            border: 3px dashed #b59464;
+            transition: all 0.3s ease;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .bridge-gap img {
+            max-width: 100px;
+            height: auto;
+            opacity: 0.8;
+        }
+        .bridge-gap .gap-label {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6a4f30;
+        }
+        .bridge-gap.drag-over {
+            background: #b8a06c;
+            border-color: #c9a16e;
+            box-shadow: 0 0 0 3px rgba(185, 135, 85, 0.3);
+        }
+        .completed-bridge {
+            background: #e8ddc4;
+            border-radius: 28px;
+            padding: 20px;
+            text-align: center;
+            display: none;
+            animation: bridgeGlow 0.5s ease-out;
+            border: 3px solid #b59464;
+            box-shadow: 0 0 20px rgba(185, 135, 85, 0.4);
+        }
+        @keyframes bridgeGlow {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .completed-bridge img {
+            max-width: 100%;
+            border-radius: 20px;
+            border: 3px solid #b59464;
+        }
+        .completed-bridge .bridge-caption {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #b28655;
+            font-weight: bold;
+        }
+        .drag-tip {
+            text-align: center;
+            margin-top: 12px;
+            padding: 10px;
+            background: #f3e5ca;
+            border-radius: 40px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .tip-arrow {
+            display: inline-block;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%,100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+        .drag-progress {
+            width: 100%;
+            height: 4px;
+            background: #e8ddc4;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
+        }
+        .drag-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #b5945c;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .history-note {
+            margin-top: 12px;
+            padding: 10px 15px;
+            background: #d4c4a8;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #2f2a1c;
+            text-align: center;
+            font-style: italic;
+            display: none;
+            border-left: 4px solid #b28655;
+        }
+
+        .nav-dots {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 16px 8px 12px;
+            gap: 12px;
+            background: #caae7c;
+            border-top: 5px solid #9e7b4b;
+        }
+        .nav-dot {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #fbebc6;
+            border: 4px solid #785f38;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #5f482b;
+            transition: transform 0.2s;
+        }
+        .nav-dot.active {
+            background: #b8874c;
+            color: white;
+            animation: pulse 1.2s infinite alternate;
+        }
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.12); }
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 10px 0 14px;
+            font-size: 14px;
+            color: #3b311d;
+            background: #caae7c;
+        }
+        .badge {
+            background: #b5945c;
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 8px 4px;
+            border: 2px solid #fbeab3;
+        }
+
+        @media (min-width: 700px) {
+            .panel { padding: 20px 22px; }
+            .comic-btn { padding: 12px 28px; }
+            .nav-dot { width: 60px; height: 60px; font-size: 24px; }
+        }
+
+        .timeline-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 14px 0;
+            display: flex;
+            gap: 18px;
+            margin: 16px 0;
+            scrollbar-width: thin;
+            background: #e8ddc4;
+            border-radius: 40px;
+            padding: 12px;
+        }
+        .timeline-era {
+            background: #c9ab7b;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 800;
+            color: #281f12;
+            border: 2px solid #755b33;
+            font-size: clamp(14px, 2.5vw, 17px);
+            display: inline-block;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .timeline-era:hover {
+            transform: scale(1.05);
+        }
+
+        .quiz-feedback {
+            background: #f3e5ca;
+            border-radius: 20px;
+            padding: 12px;
+            margin: 12px 0;
+            display: none;
+            border-left: 5px solid #b5945c;
+        }
+        .quiz-feedback.correct { background: #d4edda; border-left-color: #28a745; }
+        .quiz-feedback.wrong { background: #f8d7da; border-left-color: #dc3545; animation: shake 0.3s ease; }
+        .quiz-feedback.show { display: block; }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .video-container {
+            margin: 15px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            display: none;
+        }
+        .video-container.show { display: block; }
+        .video-container video { width: 100%; height: auto; }
+
+        #dayScene, #nightScene {
+            transition: all 0.6s ease;
+        }
+        /* 第10页 集章册样式 */
+#page10 {
+  background: #f9f3e6;
+  background-image: radial-gradient(#e8d9bc 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding: 24px 20px;
+}
+
+.stamp-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.stamp-header .stamp-icon {
+  font-size: 22px;
+}
+.stamp-header h3 {
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: bold;
+  color: #2d2418;
+}
+
+.stamp-count {
+  text-align: center;
+  font-size: clamp(14px, 2.5vw, 16px);
+  color: #5a4a36;
+  margin-bottom: 20px;
+}
+
+#page10 .stamp-book {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+#page10 .stamp {
+  background: #f0e6d2;
+  border: 2px solid #d4b890;
+  border-radius: 12px;
+  padding: 16px 10px;
+  text-align: center;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 3px 0 #c2a680;
+  transition: all 0.3s ease;
+}
+#page10 .stamp.locked {
+  opacity: 0.7;
+}
+#page10 .stamp.unlocked {
+  background: #e6f4d9;
+  border-color: #90be6d;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 3px 0 #7aa05a;
+}
+
+#page10 .stamp .lock {
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: block;
+}
+#page10 .stamp.unlocked .lock {
+  display: none;
+}
+#page10 .stamp.unlocked::before {
+  content: "✓";
+  font-size: 16px;
+  color: #28a745;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+}
+
+#page10 .stamp-text {
+  font-size: clamp(13px, 2.2vw, 15px);
+  color: #5a4a36;
+}
+#page10 .stamp.unlocked .stamp-text {
+  color: #2c5e2e;
+}
+
+.master-btn {
+  width: 100%;
+  background: #f9eed9;
+  border: 3px solid #b59464;
+  border-radius: 24px;
+  padding: 12px 20px;
+  font-size: clamp(16px, 3vw, 19px);
+  font-weight: bold;
+  color: #352f1d;
+  box-shadow: 0 5px 0 #8f734b;
+  cursor: pointer;
+  font-family: inherit;
+  transition: 0.06s linear;
+}
+.master-btn:active {
+  transform: translateY(5px);
+  box-shadow: none;
+}
+    </style>
+</head>
+<body>
+<div class="comic-book" id="comicApp">
+    <audio id="clickSound" preload="auto"><source src="音频/按钮音效.MP3" type="audio/mpeg"></audio>
+    <audio id="successSound" preload="auto"><source src="音频/成功音效.mp3" type="audio/mpeg"></audio>
+
+    <div class="page active" id="page1">
+        <div class="panel-grid">
+            <div class="panel panel-large">
+                <div class="panel-title">📍临江之困 · 南宋乾道七年</div>
+                <img src="计设——图片/第一页.png" alt="">
+            </div>
+            <div class="panel">📜 工匠甲：江心水深流急，若要建石墩稳固浮桥，需选准位置！</div>
+            <div class="panel">📜 工匠乙：中流有一处浅滩，或可立石墩。</div>
+        </div>
+        <div class="interact-zone">
+            <div class="interact-title">🌊 点击江面位置，听取建议</div>
+            <div class="river-map" style="height:180px; position:relative;">
+                <div class="river-dot" style="left:15%; top:50%;" data-pos="浅滩">🌊</div>
+                <div class="river-dot" style="left:50%; top:40%;" data-pos="中流">🎯</div>
+                <div class="river-dot" style="left:85%; top:50%;" data-pos="对称">⚖️</div>
+            </div>
+            <div id="adviceText" class="speech-bubble" style="background:#fff0d8; margin-top:12px;">💡 点击江面上的标记，听取老船工建议</div>
+            <div class="radio-group">
+                <div class="radio-option"><input type="radio" name="stonePos" value="浅滩" data-card="cardShiNew"> 江心浅滩处</div>
+                <div class="radio-option"><input type="radio" name="stonePos" value="中流" data-card="cardZhongLiu"> 中流正中央</div>
+                <div class="radio-option"><input type="radio" name="stonePos" value="对称" data-card="cardDuiCheng"> 两岸对称布墩</div>
+            </div>
+            <div class="radio-group">
+                <div class="radio-option"><input type="radio" name="boatCount" value="86" data-card="card86Boats"> 86艘木船</div>
+                <div class="radio-option"><input type="radio" name="boatCount" value="more" data-card="cardMoreBoats"> 更多船只</div>
+            </div>
+            <div class="button-group"><button class="comic-btn" id="confirmChoice">确认方案</button></div>
+        </div>
+        <div class="knowledge-card" id="cardShiNew"><h4>🔨 江心石墩</h4><img src="计设——图片/石墩木梁 · 剖视图.png" width="100%"><div>造价三万贯</div></div>
+        <div class="knowledge-card" id="card86Boats"><h4>🛶 86艘梭船</h4><img src="计设——图片/浮桥.jpg" width="100%"></div>
+        <div class="knowledge-card" id="cardZhongLiu"><h4>🎯 中流正中央</h4><div>需"睡木沉基"技术</div></div>
+        <div class="knowledge-card" id="cardDuiCheng"><h4>⚖️ 两岸对称</h4><div>造价六万贯</div></div>
+        <div class="knowledge-card" id="cardMoreBoats"><h4>🚢 106艘方案</h4><div>常祎方案</div></div>
+    </div>
+
+    <div class="page" id="page2">
+        <div class="panel-grid">
+            <div class="panel panel-large"><img src="计设——图片/第二页.png" width="100%"></div>
+        </div>
+        <div class="interact-zone">
+            <div class="button-group">
+                <button class="comic-btn" data-card="jiaGuRepair">加固石墩，重建浮桥</button>
+                <button class="comic-btn" data-card="quanliangqiao">改为全梁桥</button>
+                <button class="comic-btn" data-card="qiaoJiaoNew">请教船工</button>
+            </div>
+        </div>
+        <div class="knowledge-card" id="jiaGuRepair"><h4>睡木沉基</h4><div class="section-diagram">木筏绑石→趁潮拖入→砌石下沉</div></div>
+        <div class="knowledge-card" id="quanliangqiao"><h4>全梁桥</h4>阻断航运</div>
+        <div class="knowledge-card" id="qiaoJiaoNew"><h4>老船工陈伯</h4>“可用木筏托石，令石自沉！”</div>
+    </div>
+
+    <div class="page" id="page3">
+        <div class="panel-grid">
+            <div class="panel panel-large"><img src="计设——图片/第三页.png" width="100%"></div>
+        </div>
+        <div class="interact-zone">
+            <div class="interact-title">✨ 拖拽梭船体验启闭式</div>
+            <div class="boat-drag-area">
+                <div class="drag-row">
+                    <div class="drag-item-container">
+                        <div id="dragBoat" class="drag-ship" draggable="true">
+                            <img src="计设——图片/抠图浮桥.png" alt="梭船">
+                            <div class="ship-label">🛶 梭船（可拖拽）</div>
+                        </div>
+                    </div>
+                    <div class="gap-container">
+                        <div id="bridgeGap" class="bridge-gap">
+                            <img src="计设——图片/缺口浮桥.png" alt="缺口">
+                            <div class="gap-label">⬜ 缺口位置</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="completedBridge" class="completed-bridge">
+                    <img src="计设——图片/合拢后的广济桥.png" alt="合拢后的广济桥" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'120\' viewBox=\'0 0 300 120\'%3E%3Crect width=\'300\' height=\'120\' fill=\'%23cdb484\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%238b6f4c\'%3E🌉 广济桥合拢成功 🌉%3C/text%3E%3C/svg%3E'">
+                    <div class="bridge-caption">🌉 广济桥合拢完成！</div>
+                </div>
+                <div id="dragTip" class="drag-tip">
+                    <span class="tip-arrow">👉</span> 拖动上方梭船到缺口处
+                </div>
+                <div id="dragProgress" class="drag-progress">
+                    <div id="progressBar" class="drag-progress-bar"></div>
+                </div>
+                <div id="historyNote" class="history-note">
+                    📜 广济桥开启“十八梭船廿四洲”的独特格局
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="comic-btn" data-card="gaoQiao2">建高桥</button>
+                <button class="comic-btn" data-card="chaiQiao2">拆桥让船</button>
+                <button class="comic-btn" data-card="huoDongNew">活动桥段</button>
+            </div>
+            <div class="knowledge-card" id="huoDongNew"><h4>梭船启闭式</h4><div>白天放下通行，夜晚开船</div></div>
+            <div class="knowledge-card" id="gaoQiao2"><h4>高桥</h4>引桥过长</div>
+            <div class="knowledge-card" id="chaiQiao2"><h4>拆桥</h4>民力耗竭</div>
+        </div>
+    </div>
+
+    <div class="page" id="page4">
+        <div class="panel panel-large">🪚 睡木沉基 · 宋代深水黑科技</div>
+        <div class="model-container">
+            <img src="计设——图片/修改古建桥剖面图.png" alt="" width="100%">
+            <div id="layerWater" class="clickable-layer" style="background:#4a9eff;">🌊 水面层 ← 点击</div>
+            <div id="layerWood" class="clickable-layer" style="background:#d9b574;">🪵 木筏层（睡木）← 点击</div>
+            <div id="layerStoneBase" class="clickable-layer" style="background:#a57c44;">🪨 石墩基础层 ← 点击</div>
+            <div id="layerStoneBody" class="clickable-layer" style="background:#8b6238;">🏛️ 石墩主体层 ← 点击</div>
+            <div id="layerBridge" class="clickable-layer" style="background:#cdad78;">🌉 桥面层 ← 点击</div>
+        </div>
+        <div id="layerInfo" class="layer-info"><h4>💡 点击上方图层查看解释</h4><p>点击任意图层，了解睡木沉基技术的每一层构造</p></div>
+        <div id="constructionVideo" class="video-container" style="display:none;"><video controls><source src="视频/睡木沉基法过程.mp4" type="video/mp4"></video><div class="video-caption">📹 睡木沉基施工全过程</div></div>
+        <button class="comic-btn" id="animateBtn">▶ 播放施工全过程</button>
+        <div class="badge">这项技术比西方早了三百年</div>
+    </div>
+
+    <div class="page" id="page5">
+        <div class="panel-grid">
+            <div class="panel panel-large">🛶 东西石梁桥，中间梭船数十艘相连<br>明代定型为"十八梭船廿四洲"</div>
+            <div class="panel">白天：百姓挑担赶集</div>
+            <div class="panel">傍晚：解开梭船，盐船通过</div>
+        </div>
+        <div style="text-align: center; font-weight: bold; margin: 16px 0;">← 滑动切换昼夜 →</div>
+        <input type="range" id="dayNightSlider" min="0" max="100" value="0" step="1" style="width:100%; margin:16px 0;">
+        <div id="dayNightLabel" style="text-align:center; font-weight:bold; margin:8px 0;">🌞 白天模式</div>
+        <div id="dayScene" class="daynight-scene" style="background:#FFE4B5;"><img src="计设——图片/第四幕第五页白天模式.png" alt="白天" width="100%"><div>🌞 白天模式：梭船放下，百姓挑担赶集</div><button class="comic-btn" id="daySceneBtn">点击行人 → 宋代市井生活</button></div>
+        <div id="nightScene" class="daynight-scene" style="display:none; background:#2c3e50;"><img src="计设——图片/第四幕第五页黑夜模式.png" alt="黑夜" width="100%"><div>🌙 黑夜模式：梭船拉开，盐船点灯通过</div><button class="comic-btn" id="nightSceneBtn">点击盐船 → 宋代盐运贸易</button></div>
+        <div class="interact-zone"><div id="sliderHint" style="text-align:center;">当前：🌞 白天模式</div></div>
+    </div>
+
+    <div class="page" id="page6">
+        <div class="panel panel-large">📅 千年演变 · 历代接力建桥</div>
+        <div class="timeline-scroll">
+            <span class="timeline-era" data-era="曾汪">曾汪 1171</span>
+            <span class="timeline-era" data-era="常祎">常祎 1174</span>
+            <span class="timeline-era" data-era="丁允元">丁允元 1189</span>
+            <span class="timeline-era" data-era="沈宗禹">沈宗禹 1194</span>
+            <span class="timeline-era" data-era="林光世">林光世 1259</span>
+            <span class="timeline-era" data-era="明代">明代定型</span>
+        </div>
+        <div id="eraDetailPanel" class="panel-grid"><div class="panel">点击时间轴人物，查看详细建造历程</div></div>
+    </div>
+
+    <div class="page" id="page7">
+        <div class="panel panel-large">🔐 建筑密码 · 完成谜题解锁成就</div>
+        <div class="quiz-container"><div class="quiz-title">🔧 谜题1：桥墩间距</div><div class="river-flow-diagram"><div style="font-size:28px; color:white;">→→→  →→→→  →→→→→</div><div style="color:white;">水流速度 → 从左到右逐渐加快</div></div><div style="text-align:center;">“水流越急，桥墩间距应____？”</div><div class="quiz-options"><div class="quiz-option" data-quiz1="wide">【越宽】</div><div class="quiz-option" data-quiz1="narrow">【越窄】</div><div class="quiz-option" data-quiz1="same">【不变】</div></div><div id="quiz1Feedback" class="quiz-feedback"></div></div>
+        <div class="quiz-container"><div class="quiz-title">🔧 谜题2：船数变化</div><div class="drag-match-area"><div class="drag-items"><div class="drag-item" draggable="true" data-value="水文">📏 水文水深测算</div><div class="drag-item" draggable="true" data-value="佛教">🙏 佛教吉祥数</div><div class="drag-item" draggable="true" data-value="皇帝">👑 皇帝钦定</div></div><div class="drop-zones"><div class="drop-zone" data-correct="水文">⬇️ 正确答案放置区</div></div></div><div id="quiz2Feedback" class="quiz-feedback"></div></div>
+        <div class="quiz-container"><div class="quiz-title">🔧 谜题3：浮运架梁</div><div class="double-drag-area"><div id="dragLeftItem" class="drag-left" draggable="true"><div>⬅️ 万斤石梁</div><img src="计设——图片/p9-石梁.png" width="50%"></div><div id="dropRightArea" class="drag-right"><div>🏛️ 桥墩</div><img src="计设——图片/p9-石墩.png" width="80%"></div></div><div id="beamStatus">💡 等待安装石梁...</div><div id="successBox" class="success-box"><div>🏆 浮运架梁成功！</div><div>✅ 架梁成功！</div><img src="计设——图片/p9-架梁成功.jpg" width="100%"></div></div>
+        <div id="videoContainer" class="video-container"><video controls><source src="视频/浮运架梁法.mp4" type="video/mp4"></video></div>
+    </div>
+
+    <div class="page" id="page8">
+    <div class="panel panel-large"><div>点击按钮，查看不同选择下的广济桥命运</div></div>
+    <div class="button-group">
+        <button class="comic-btn" id="endABtn">🏔️ 全石桥</button>
+        <button class="comic-btn" id="endBBtn">🌊 全浮桥</button>
+        <button class="comic-btn" id="endCBtn">✨ 启闭式</button>
+    </div>
+    <!-- 默认全部隐藏 -->
+    <div class="ending-scene" id="endingA" style="display:none;">
+        <h3>🏔️ 全石桥结局</h3>
+        <div class="ending-img"><img src="计设——图片/p8-全石桥结局.png"></div>
+        <div class="badge">成就：石匠的坚持</div>
+    </div>
+    <div class="ending-scene" id="endingB" style="display:none;">
+        <h3>🌊 全浮桥结局</h3>
+        <div class="ending-img"><img src="计设——图片/p8-全浮桥结局.png"></div>
+        <div class="badge">成就：随波逐流</div>
+    </div>
+    <div class="ending-scene" id="endingC" style="display:none;">
+        <h3>✨ 启闭式结局</h3>
+        <div class="scene-desc">曾汪→丁允元→沈宗禹→林光世→明代定型，千年传奇！</div>
+        <div class="ending-img"><img src="计设——图片/启闭式结局1.jpg"><img src="计设——图片/启闭式结局2.jpg"><img src="计设——图片/启闭式结局.png"></div>
+        <div class="badge">🏆 真正懂桥的人</div>
+    </div>
+</div>
+
+        <div class="page" id="page9">
+        <div class="panel panel-large" style="text-align:center; font-size:clamp(18px,4vw,24px); letter-spacing:2px; padding:20px 10px;">
+            🌉 广济桥 · 世界第一座启闭式桥梁
+        </div>
+
+        <!-- 四大核心亮点卡片 -->
+        <div class="panel-grid" style="margin-top:12px;">
+            <div class="panel">
+                <div class="panel-title">🏗️ 桥梁结构</div>
+                <img src="计设——图片/广济桥结构示意.png" style="margin:10px 0;" alt="结构示意">
+                <p style="margin-top:8px;">东西石梁桥 + 中间18艘梭船<br>
+                <strong>“十八梭船廿四洲”</strong> 千古格局</p>
+            </div>
+            <div class="panel">
+                <div class="panel-title">⚓ 启闭智慧</div>
+                <img src="计设——图片/启闭示意.png" style="margin:10px 0;" alt="启闭示意">
+                <p style="margin-top:8px;">白天合拢供百姓通行<br>
+                夜间解开让大船通航<br>
+                <strong>世界最早“开合桥”</strong></p>
+            </div>
+            <div class="panel">
+                <div class="panel-title">🛠️ 建造绝技</div>
+                <ul style="padding-left:20px; margin-top:8px; line-height:1.6;">
+                    <li>睡木沉基（水下筑基）</li>
+                    <li>浮运架梁（万斤石梁）</li>
+                    <li>榫卯咬合，不用一钉</li>
+                </ul>
+            </div>
+            <div class="panel">
+                <div class="panel-title">🏛️ 历史地位</div>
+                <div style="text-align:center; font-size:16px; margin-top:10px;">
+                    <span class="badge">中国四大古桥</span>
+                    <span class="badge">世界文化遗产预备</span>
+                </div>
+                <p style="margin-top:12px; text-align:center;">
+                    集<b>梁桥、浮桥、拱桥</b>于一身<br>
+                    天下独一无二！
+                </p>
+            </div>
+        </div>
+
+        <!-- 点睛总结 -->
+        <div class="panel panel-large" style="margin-top:16px; text-align:center; background:#fff0d8; border-color:#b28655;">
+            <strong style="font-size:clamp(16px,3vw,20px); color:#935d2c;">
+                一桥启合，通江达海<br>
+                千年匠心，光耀华夏
+            </strong>
+        </div>
+    </div>
+
+        <!-- 页码10: 集章册 -->
+    <div class="page" id="page10">
+  <div class="stamp-header">
+    <span class="stamp-icon">📚</span>
+    <h3>营造法式·集章册</h3>
+  </div>
+  <div class="stamp-count">已收集 0/9 枚印章</div>
+
+  <div class="stamp-book" id="stampBook">
+    <div class="stamp locked">
+      <span class="lock">🔒</span>
+      <div class="stamp-text">睡木沉基</div>
+    </div>
+    <div class="stamp locked">
+      <span class="lock">🔒</span>
+      <div class="stamp-text">梭船连接</div>
+    </div>
+    <div class="stamp locked">
+      <span class="lock">🔒</span>
+      <div class="stamp-text">浮运架梁</div>
+    </div>
+    <div class="stamp locked">
+      <span class="lock">🔒</span>
+      <div class="stamp-text">石砌工艺</div>
+    </div>
+    <div class="stamp locked">
+      <span class="lock">🔒</span>
+      <div class="stamp-text">铁锚固定</div>
+    </div>
+    <div class="stamp locked">
+      <span class="lock">🔒</span>
+      <div class="stamp-text">水文观测</div>
+    </div>
+    <div class="stamp locked">
+      <span class="lock">🔒</span>
+      <div class="stamp-text">历代接力</div>
+    </div>
+    <div class="stamp locked">
+      <span class="lock">🔒</span>
+      <div class="stamp-text">启闭设计</div>
+    </div>
+    <div class="stamp locked">
+      <span class="lock">🔒</span>
+      <div class="stamp-text">宋代船数演变</div>
+    </div>
+  </div>
+
+  <button class="master-btn" id="claimMasterBtn">获得 "宋代造桥匠人" 称号</button>
+</div>
+
+    <div class="nav-dots" id="navDots">
+        <div class="nav-dot" data-page="1">1</div>
+        <div class="nav-dot" data-page="2">2</div>
+        <div class="nav-dot" data-page="3">3</div>
+        <div class="nav-dot" data-page="4">4</div>
+        <div class="nav-dot" data-page="5">5</div>
+        <div class="nav-dot" data-page="6">6</div>
+        <div class="nav-dot" data-page="7">7</div>
+        <div class="nav-dot" data-page="8">8</div>
+        <div class="nav-dot" data-page="9">9</div>
+        <div class="nav-dot" data-page="10">10</div>
+    </div>
+</div>
+
+<script>
+(function() {
+    let stamps = {
+        '睡木沉基': false, '梭船连接': false, '浮运架梁': false,
+        '石砌工艺': false, '铁锚固定': false, '水文观测': false,
+        '历代接力': false, '启闭设计': false, '宋代船数演变': false
+    };
+    let currentPage = 1;
+
+    function playSound(soundId) {
+        let s = document.getElementById(soundId);
+        if(s && s.src) { s.currentTime=0; s.play().catch(e=>{}); }
+    }
+    function playClick() { playSound('clickSound'); }
+    function playSuccess() { playSound('successSound'); }
+
+    function showAchievement(text) {
+        let pop = document.createElement('div');
+        pop.style.cssText = `
+            position:fixed; top:22%; left:50%; transform:translate(-50%,-50%);
+            background:#b28655; color:#fff; padding:14px 28px; border-radius:30px;
+            font-weight:bold; z-index:999; animation: fadeInOut 1.6s;
+            font-size:16px; box-shadow:0 8px 20px rgba(0,0,0,0.3);
+        `;
+        pop.innerText = "🏆 " + text;
+        document.body.appendChild(pop);
+        setTimeout(()=>pop.remove(), 1600);
+    }
+
+    const pages = document.querySelectorAll('.page');
+    const dots = document.querySelectorAll('.nav-dot');
+    function showPage(id) {
+        pages.forEach(p=>p.classList.remove('active'));
+        document.getElementById('page'+id)?.classList.add('active');
+        dots.forEach(d=>d.classList.remove('active'));
+        let active = Array.from(dots).find(d=>d.dataset.page==id);
+        if(active) active.classList.add('active');
+        currentPage = parseInt(id);
+    }
+
+    dots.forEach(d=>d.addEventListener('click',e=>showPage(e.target.dataset.page)));
+    document.querySelectorAll('.comic-btn, .nav-dot, .timeline-era, .drag-item, .clickable-layer, .river-dot, .quiz-option').forEach(btn=>btn.addEventListener('click',()=>playClick()));
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e=>{
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    document.addEventListener('touchend', e=>{
+        let delta = e.changedTouches[0].screenX - touchStartX;
+        if(delta > 50) showPage( Math.max(1, currentPage-1) );
+        if(delta < -50) showPage( Math.min(10, currentPage+1) );
+    });
+
+    document.querySelectorAll('.panel img').forEach(img=>{
+        img.onclick = ()=>{
+            let i = document.createElement('img');
+            i.src = img.src;
+            i.style.cssText = "position:fixed;inset:0;margin:auto;max-width:92%;max-height:90vh;z-index:999;background:rgba(0,0,0,0.85);padding:20px;border-radius:12px;cursor:zoom-out;";
+            i.onclick = ()=>i.remove();
+            document.body.appendChild(i);
+        };
+    });
+
+    document.querySelectorAll('.river-dot').forEach(dot=>{
+        dot.addEventListener('click',(e)=>{
+            let pos=dot.getAttribute('data-pos');
+            let advice={'浅滩':'浅滩好施工，但桥会偏，银子省些...','中流':'中流最稳，但那位置...难啊！','对称':'两边都建墩？银子怕要翻番喽...'};
+            document.getElementById('adviceText').innerHTML=`🚣 老船工陈伯：“${advice[pos]}”`;
+        });
+    });
+    document.getElementById('confirmChoice')?.addEventListener('click',()=>{
+        let pos=document.querySelector('input[name="stonePos"]:checked')?.value;
+        let boat=document.querySelector('input[name="boatCount"]:checked')?.value;
+        if(!pos) alert("请选择石墩位置");
+        else if(!boat) alert("请选择浮桥规模");
+        else alert(`方案已定：${pos}，${boat==='86'?'86艘木船':'更多船只'}`);
+    });
+
+    document.querySelectorAll('input[type="radio"][data-card]').forEach(radio=>{
+        radio.addEventListener('click',function(){
+            let cardId=this.getAttribute('data-card');
+            let page=this.closest('.page');
+            if(page && cardId){
+                page.querySelectorAll('.knowledge-card').forEach(c=>c.classList.remove('show'));
+                page.querySelector('#'+cardId)?.classList.add('show');
+            }
+        });
+    });
+    document.querySelectorAll('.comic-btn[data-card]').forEach(btn=>{
+        btn.addEventListener('click',function(){
+            let cardId=this.getAttribute('data-card');
+            let page=this.closest('.page');
+            if(page && cardId){
+                page.querySelectorAll('.knowledge-card').forEach(c=>c.classList.remove('show'));
+                page.querySelector('#'+cardId)?.classList.add('show');
+            }
+        });
+    });
+
+    let boatPlaced = false;
+    const dragBoat = document.getElementById('dragBoat');
+    const gapArea = document.getElementById('bridgeGap');
+    const dragTip = document.getElementById('dragTip');
+    const dragProgress = document.getElementById('dragProgress');
+    const progressBar = document.getElementById('progressBar');
+    const completedBridge = document.getElementById('completedBridge');
+    const historyNote = document.getElementById('historyNote');
+    let progressInterval = null;
+
+    function startProgress() {
+        if(dragProgress) dragProgress.style.display = 'block';
+        let width = 0;
+        if(progressInterval) clearInterval(progressInterval);
+        progressInterval = setInterval(() => {
+            width += 10;
+            if(progressBar) progressBar.style.width = width + '%';
+            if(width >= 100) clearInterval(progressInterval);
+        }, 50);
+    }
+    function resetProgress() {
+        clearInterval(progressInterval);
+        if(progressBar) progressBar.style.width = '0%';
+        if(dragProgress) dragProgress.style.display = 'none';
+    }
+
+    if(dragBoat && gapArea) {
+        dragBoat.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', 'boat');
+            dragBoat.classList.add('dragging');
+            dragTip.innerHTML = '<span class="tip-arrow">🔄</span> 正在合拢桥梁...';
+            dragTip.style.background = '#e0d0b0';
+            startProgress();
+        });
+        dragBoat.addEventListener('dragend', () => {
+            dragBoat.classList.remove('dragging');
+            if(!boatPlaced) {
+                dragTip.innerHTML = '<span class="tip-arrow">👉</span> 拖动上方梭船到缺口处';
+                dragTip.style.background = '#f3e5ca';
+                resetProgress();
+            }
+        });
+        gapArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            gapArea.classList.add('drag-over');
+            dragBoat.style.transform = "scale(1.08) translateY(-8px)";
+        });
+        gapArea.addEventListener('dragleave', () => {
+            gapArea.classList.remove('drag-over');
+        });
+        gapArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            gapArea.classList.remove('drag-over');
+            if(!boatPlaced) {
+                boatPlaced = true;
+                progressBar.style.width = '100%';
+                setTimeout(() => resetProgress(), 500);
+                dragBoat.style.display = 'none';
+                gapArea.style.display = 'none';
+                completedBridge.style.display = 'block';
+                dragTip.innerHTML = '✅ 广济桥合拢完成！';
+                dragTip.style.background = '#d4edda';
+                dragTip.style.color = '#2c5e2e';
+                historyNote.style.display = 'block';
+                stamps['梭船连接']=true; stamps['启闭设计']=true;
+                updateStamps();
+                playSuccess();
+                showAchievement("解锁·启闭式桥梁");
+            }
+        });
+    }
+
+    const layerInfoMap = {
+        'layerWater':{title:'🌊 水面层',desc:'韩江水面，汛期水位差可达8米。古人通过观测水文，选择在枯水期施工。'},
+        'layerWood':{title:'🪵 木筏层（睡木）',desc:'多层圆木捆扎成木筏，利用浮力托起石料。木筏腐烂后石基稳固，比西方早三百年！'},
+        'layerStoneBase':{title:'🪨 石墩基础层',desc:'逐层砌筑石块，木筏随重量下沉，形成稳固基础。'},
+        'layerStoneBody':{title:'🏛️ 石墩主体层',desc:'条石错缝砌筑，榫卯加固，承受桥梁全部重量。'},
+        'layerBridge':{title:'🌉 桥面层',desc:'杉木作梁，上铺桥面，可承受车马行人通行。'}
+    };
+    document.querySelectorAll('#layerWater,#layerWood,#layerStoneBase,#layerStoneBody,#layerBridge').forEach(layer=>{
+        layer.addEventListener('click',function(){
+            let id=this.id;let info=layerInfoMap[id];
+            if(info)document.getElementById('layerInfo').innerHTML=`<h4>${info.title}</h4><p>${info.desc}</p>`;
+            if(id==='layerWood'){stamps['睡木沉基']=true;updateStamps();showAchievement("解锁·睡木沉基");}
+        });
+    });
+
+    const animateBtn=document.getElementById('animateBtn');
+    const constructionVideo=document.getElementById('constructionVideo');
+    if(animateBtn&&constructionVideo){
+        animateBtn.addEventListener('click',()=>{
+            constructionVideo.style.display='block';
+            const video=constructionVideo.querySelector('video');
+            if(video)video.play().catch(e=>{});
+        });
+    }
+
+    const slider=document.getElementById('dayNightSlider');
+    const dayScene=document.getElementById('dayScene');
+    const nightScene=document.getElementById('nightScene');
+    const dayNightLabel=document.getElementById('dayNightLabel');
+    const sliderHint=document.getElementById('sliderHint');
+    function updateDayNightScene(value){
+        const val=parseInt(value);
+        dayScene.style.display='none';nightScene.style.display='none';
+        if(val<50){dayScene.style.display='block';dayNightLabel.innerHTML='🌞 白天模式';sliderHint.innerHTML='当前：🌞 白天模式 · 梭船合拢，百姓通行';}
+        else{nightScene.style.display='block';dayNightLabel.innerHTML='🌙 黑夜模式';sliderHint.innerHTML='当前：🌙 黑夜模式 · 梭船拉开，盐船通过';}
+    }
+    if(slider){slider.value=0;updateDayNightScene(0);slider.addEventListener('input',(e)=>updateDayNightScene(e.target.value));}
+    document.getElementById('daySceneBtn')?.addEventListener('click',()=>alert('宋代潮州：市井繁华'));
+    document.getElementById('nightSceneBtn')?.addEventListener('click',()=>alert('宋代盐运贸易繁忙'));
+
+    const timelineMap={'曾汪':'1171年 曾汪：始建石墩+86艘浮桥','常祎':'1174年 常祎：增筑石墩，浮桥增至106艘','丁允元':'1189年 丁允元：西岸建梁桥"丁侯桥"','沈宗禹':'1194年 沈宗禹：东岸建桥墩"济川桥"','林光世':'1259年 林光世：以24艘船连接浮桥','明代':'1530年 定型为"十八梭船廿四洲"'};
+    document.querySelectorAll('.timeline-era').forEach(item=>{
+        item.addEventListener('click',()=>{
+            let era=item.getAttribute('data-era');
+            let detail=document.getElementById('eraDetailPanel');
+            if(detail&&timelineMap[era])detail.innerHTML=`<div class="panel">${timelineMap[era]}</div>`;
+            stamps['历代接力']=true;updateStamps();showAchievement("解锁·历代建桥史");
+        });
+    });
+
+    document.querySelectorAll('[data-quiz1]').forEach(option=>{
+        option.addEventListener('click',()=>{
+            let answer=option.getAttribute('data-quiz1');
+            let fb=document.getElementById('quiz1Feedback');
+            if(answer==='wide'){
+                fb.innerHTML='✅ 正解！水流越急，桥墩间距应越宽！';fb.className='quiz-feedback correct show';
+                stamps['水文观测']=true;updateStamps();showAchievement("解锁·水文智慧");
+            }else{fb.innerHTML='❌ 再试试！水流越急，桥墩间距需要更大。';fb.className='quiz-feedback wrong show';}
+            setTimeout(()=>fb.classList.remove('show'),2500);
+        });
+    });
+
+    let dropZone2=document.querySelectorAll('.drop-zone')[0];
+    let dragItems=document.querySelectorAll('.drag-item');
+    dragItems.forEach(item=>{item.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',item.getAttribute('data-value')));});
+    if(dropZone2){
+        dropZone2.addEventListener('dragover',e=>e.preventDefault());
+        dropZone2.addEventListener('drop',e=>{
+            let val=e.dataTransfer.getData('text/plain');
+            let fb=document.getElementById('quiz2Feedback');
+            if(val==='水文'){
+                fb.innerHTML='✅ 正解！江面宽度决定船数，水文测算是关键！';fb.className='quiz-feedback correct show';
+                stamps['宋代船数演变']=true;updateStamps();showAchievement("解锁·船数奥秘");
+                dropZone2.classList.add('dropped');dropZone2.innerHTML='✅ 水文水深测算';
+            }else{fb.innerHTML='❌ 再想想！船数变化与水文水深有关';fb.className='quiz-feedback wrong show';}
+            setTimeout(()=>fb.classList.remove('show'),2500);
+        });
+    }
+
+    let dragLeft=document.getElementById('dragLeftItem');
+    let dropRight=document.getElementById('dropRightArea');
+    let beamStatusDiv=document.getElementById('beamStatus');
+    let successBox=document.getElementById('successBox');
+    let videoContainer=document.getElementById('videoContainer');
+    let beamSuccess=false;
+    if(dragLeft&&dropRight){
+        dragLeft.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain','beam'));
+        dropRight.addEventListener('dragover',e=>e.preventDefault());
+        dropRight.addEventListener('drop',e=>{
+            e.preventDefault();
+            if(!beamSuccess){
+                beamSuccess=true;
+                dragLeft.style.opacity='0.5';dragLeft.draggable=false;
+                dropRight.classList.add('dropped');
+                dropRight.innerHTML='<div>🏛️ ✅ 石梁已成功安装！</div><img src="计设——图片/p9-石墩.png" width="80%">';
+                beamStatusDiv.innerHTML='✅ 架梁成功！石梁稳稳架在桥墩上 🎉';
+                successBox.classList.add('show');videoContainer.classList.add('show');
+                stamps['浮运架梁']=true;updateStamps();playSuccess();showAchievement("解锁·浮运架梁");
+            }
+        });
+    }
+
+        function showEnding(type) {
+        // 先全部隐藏
+        document.getElementById('endingA').style.display = 'none';
+        document.getElementById('endingB').style.display = 'none';
+        document.getElementById('endingC').style.display = 'none';
+        // 只显示选中的
+        if (type === 'A') document.getElementById('endingA').style.display = 'block';
+        if (type === 'B') document.getElementById('endingB').style.display = 'block';
+        if (type === 'C') {
+            document.getElementById('endingC').style.display = 'block';
+            stamps['启闭设计'] = true;
+            updateStamps();
+        }
+    }
+    document.getElementById('endABtn')?.addEventListener('click',()=>showEnding('A'));
+    document.getElementById('endBBtn')?.addEventListener('click',()=>showEnding('B'));
+    document.getElementById('endCBtn')?.addEventListener('click',()=>showEnding('C'));
+
+    function updateStamps(){
+        let count=Object.values(stamps).filter(v=>v).length;
+        document.getElementById('stampCount').innerHTML=`已收集 ${count}/9 枚印章`;
+        let book=document.getElementById('stampBook');book.innerHTML='';
+        for(let [k,v] of Object.entries(stamps)){
+            book.innerHTML+=`<div class="stamp ${v?'unlocked':'locked'}"><div>${v?'✓':'🔒'}</div><div>${k}</div></div>`;
+        }
+    }
+    document.getElementById('claimMasterBtn')?.addEventListener('click',()=>{
+        let count=Object.values(stamps).filter(v=>v).length;
+        if(count>=9){alert('🎉 获得 "宋代造桥匠人" 称号！');showAchievement("宋代造桥匠人");}
+        else alert(`还需收集 ${9-count} 枚印章`);
+    });
+    updateStamps();
+})();
+</script>
+</body>
+</html>
