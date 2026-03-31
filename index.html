@@ -11,6 +11,81 @@
             box-sizing: border-box;
         }
 
+        /* 封面页 */
+        .cover-book {
+            max-width: 800px;
+            width: 100%;
+            background: #f5ecda;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5), 0 0 0 2px #b59b6b, 0 0 0 6px #4d3e28;
+            border-radius: 32px;
+            overflow: hidden;
+        }
+        .cover-content {
+            padding: 40px 24px;
+            text-align: center;
+            background: #faf3e2;
+            background-image: radial-gradient(circle at 20% 30%, #f3e5ca 2px, transparent 2px),
+                              radial-gradient(circle at 80% 70%, #e5d6b5 1px, transparent 2px);
+            background-size: 30px 30px;
+            min-height: calc(100vh - 200px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .cover-title {
+            font-size: clamp(26px, 6vw, 40px);
+            font-weight: bold;
+            color: #4d3e28;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            animation: titleFade 1s 0.3s forwards;
+            opacity: 0;
+        }
+        .cover-subtitle {
+            font-size: clamp(16px, 3vw, 20px);
+            color: #8f734b;
+            margin-bottom: 30px;
+            animation: titleFade 1s 0.6s forwards;
+            opacity: 0;
+        }
+        @keyframes titleFade { to { opacity: 1; } }
+        .cover-intro {
+            font-size: clamp(15px, 2.5vw, 17px);
+            color: #3d3425;
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto 36px;
+            animation: introFade 1.2s 0.9s forwards;
+            opacity: 0;
+        }
+        @keyframes introFade { to { opacity: 1; } }
+        .start-btn {
+            display: inline-block;
+            background: #b28655;
+            color: #fff;
+            font-size: clamp(18px, 4vw, 24px);
+            font-weight: bold;
+            padding: 14px 40px;
+            border-radius: 60px;
+            border: 3px solid #f7d5a0;
+            box-shadow: 0 6px 0 #7b5e38;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            animation: btnPop 1s 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            text-decoration: none;
+        }
+        .start-btn:hover {
+            transform: scale(1.05);
+            background: #c9a16e;
+        }
+        .start-btn:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+        @keyframes btnPop { to { opacity: 1; transform: scale(1); } }
+
         body {
             background: #eee4d1;
             font-family: 'Noto Serif SC', '华文楷体', 'KaiTi', '楷体', 'Times New Roman', serif;
@@ -19,6 +94,7 @@
             align-items: center;
             min-height: 100vh;
             padding: 30px 16px;
+            font-weight: bold;
         }
 
         .comic-book {
@@ -41,9 +117,13 @@
             border-bottom: 3px solid #c9af87;
             animation: pageFade 0.4s ease;
             gap: 20px;
-            max-height: 80vh;
-            overflow-y: auto;
-            scroll-behavior: smooth;
+        }
+
+        /* 封面页作为第0页的特殊样式 */
+        .page.cover-page {
+            min-height: calc(100vh - 200px);
+            justify-content: center;
+            border-bottom: none;
         }
 
         @keyframes pageFade {
@@ -74,6 +154,8 @@
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.2s;
+            text-align: center;
+            
         }
         .panel:hover {
             transform: translateY(-3px);
@@ -93,31 +175,27 @@
             margin: 14px 0;
             cursor: zoom-in;
             transition: transform 0.2s;
-            loading: lazy;
         }
         .panel img:hover {
             transform: scale(1.02);
         }
 
         .panel-title {
-            font-weight: 700;
+            font-weight: bold;
             background: #b28655;
             color: #fdf3db;
-            display: block;
             text-align: center;
-            padding: 6px 22px;
+            padding: 8px 24px;
             border-radius: 40px;
-            font-size: clamp(12px, 2vw, 15px);
-            letter-spacing: 1.5px;
-            margin-bottom: 12px;
-            border: 1px solid #f7d5a0;
+            font-size: clamp(14px, 2.3vw, 17px);
+            margin: 0 auto 14px;
+            border: 2px solid #f7d5a0;
             width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
+            box-shadow: 0 3px 0 #7b5e38;
         }
 
         .card-header {
-            font-weight: 700;
+            font-weight: bold;
             background: #b28655;
             color: #fdf3db;
             text-align: center;
@@ -133,7 +211,7 @@
         .interact-zone {
             background: #d8bc8e;
             border-radius: 50px 50px 30px 30px;
-            padding: 24px 20px;
+            padding: 18px 12px;
             border: 4px solid #a17f51;
             margin: 16px 0;
             box-shadow: inset 0 2px 8px #fff2cf, 0 8px 0 #6b4f2e;
@@ -147,6 +225,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            justify-content:center;
         }
 
         .interact-title::before {
@@ -167,7 +246,7 @@
             border-radius: 60px;
             padding: 12px 24px;
             font-size: clamp(15px, 2.8vw, 19px);
-            font-weight: 600;
+            font-weight: bold;
             color: #352f1d;
             box-shadow: 0 5px 0 #5f4a2e;
             cursor: pointer;
@@ -194,8 +273,6 @@
             display: none;
             font-size: clamp(14px, 2.5vw, 17px);
             box-shadow: 0 6px 0 #7e623b, inset 0 0 0 2px #ffeecc;
-            max-height: 220px;
-            overflow-y: auto;
         }
         .knowledge-card.show {
             display: block;
@@ -214,6 +291,7 @@
             border-left: 8px solid #b28655;
             font-size: 15px;
             line-height: 1.6;
+            text-align: center;
         }
 
         .river-map {
@@ -221,7 +299,7 @@
               min-height: 180px;
                border-radius: 20px;
                padding: 24px;
-               background: url("计设——图片/p1江面.png") center center / cover no-repeat;
+               background: url("assets/page_01_rivermap.png") center center / cover no-repeat;
         }
         .river-dot {
             position: absolute;
@@ -238,45 +316,55 @@
             transition: all 0.2s;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
             overflow: hidden;
-            background-color: rgba(255,215,0,0.9);
+            background-color: rgba(212, 175, 55, 0.35);
         }
         .river-dot:hover {
             transform: scale(1.2);
             filter: brightness(1.1);
         }
 
-        .nav-dots {
-            display: flex;
-            flex-wrap: wrap;
+        /* 新版分页 ← 第 X 页 / 共 10 页 → */
+        .page-nav {
+            align-items: center;
             justify-content: center;
             padding: 20px 10px 16px;
-            gap: 14px;
+            gap: 16px;
             background: #caae7c;
             border-top: 5px solid #9e7b4b;
+            font-size: clamp(16px, 3vw, 20px);
+            font-weight: bold;
+            color: #3b311d;
+            display: flex; /* 全程显示 */
         }
-        .nav-dot {
-            width: 50px;
-            height: 50px;
+
+        .page-nav-arrow {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: #fbebc6;
-            border: 4px solid #785f38;
+            border: 3px solid #785f38;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 900;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
-            box-shadow: 0 5px 0 #5f482b;
+            box-shadow: 0 4px 0 #5f482b;
             transition: all 0.2s;
+            user-select: none;
         }
-        .nav-dot.active {
-            background: #b8874c;
-            color: white;
+        .page-nav-arrow:hover {
+            background: #e0c8a0;
             transform: scale(1.08);
         }
-        .nav-dot:hover:not(.active) {
-            background: #e0c8a0;
-            transform: scale(1.05);
+        .page-nav-arrow.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .page-nav-text {
+            min-width: 160px;
+            text-align: center;
+            letter-spacing: 1px;
         }
 
         .footer-note {
@@ -294,6 +382,7 @@
             display: inline-block;
             margin: 8px 4px;
             border: 2px solid #fbeab3;
+            text-align: center;
         }
 
         .daynight-scene {
@@ -374,7 +463,7 @@
             background: #c9ab7b;
             border-radius: 50px;
             padding: 8px 20px;
-            font-weight: 800;
+            font-weight: bold;
             color: #281f12;
             border: 2px solid #755b33;
             font-size: clamp(14px, 2.5vw, 17px);
@@ -417,7 +506,6 @@
             border-radius: 16px;
             border: 3px solid #9b7e54;
             object-fit: cover;
-            loading: lazy;
         }
         .ending-scene {
             text-align: center;
@@ -456,67 +544,6 @@
             background: linear-gradient(135deg, #fae9cd, #f7d9ad);
             transform: translateY(-2px);
             color: #5c3a21;
-        }
-
-        #page10 {
-            background: #f9f3e6;
-            background-image: radial-gradient(#e8d9bc 1px, transparent 1px);
-            background-size: 20px 20px;
-            padding: 28px 22px;
-            gap: 24px;
-        }
-        .stamp-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .stamp-count {
-            text-align: center;
-            font-size: clamp(14px, 2.5vw, 16px);
-            color: #5a4a36;
-            margin-bottom: 24px;
-        }
-        .stamp-book {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .stamp {
-            background: #f0e6d2;
-            border: 2px solid #d4b890;
-            border-radius: 12px;
-            padding: 20px 10px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        .stamp.unlocked {
-            background: #e6f4d9;
-            border-color: #90be6d;
-        }
-        .stamp.locked {
-            opacity: 0.7;
-        }
-        .stamp-text {
-            font-size: clamp(13px, 2.2vw, 15px);
-            color: #5a4a36;
-        }
-        .master-btn {
-            width: 100%;
-            background: #f9eed9;
-            border: 3px solid #b59464;
-            border-radius: 24px;
-            padding: 14px 20px;
-            font-size: clamp(16px, 3vw, 19px);
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.06s linear;
-        }
-        .master-btn:active {
-            transform: translateY(5px);
-            box-shadow: none;
         }
 
         .drag-ship {
@@ -589,7 +616,6 @@
             max-width: 70px;
             height: auto;
             margin-top: 8px;
-            loading: lazy;
         }
         .success-box {
             background: #d4edda;
@@ -633,7 +659,7 @@
             color: #fdf3db;
             transition: 0.2s;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
         }
         .layer-header:hover {
@@ -649,18 +675,31 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out, padding 0.2s;
             line-height: 1.6;
+            text-align: left;
         }
         .layer-content.show {
             padding: 14px;
             max-height: 220px;
-            overflow-y: auto;
         }
         .video-container {
             margin: 18px 0;
             border-radius: 16px;
             overflow: hidden;
-            background: #000;
+            background: #f3e5ca;
             display: none;
+            border: none;
+            position: relative;
+            width: 100%;
+            padding-top: 75%;
+        }
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
         }
         .video-container.show { display: block; }
         .quiz-card {
@@ -764,6 +803,7 @@
             line-height: 1.6;
             color: #5a4a36;
         }
+        /* 从左向右展开样式 */
         .person-expand {
             position: absolute;
             top: 0;
@@ -838,10 +878,9 @@
             border-top: none;
         }
         .expand-content.show {
-            max-height: 220px;
+            max-height: 500px;
             padding-top: 12px;
             border-top: 1px solid #e8ddc4;
-            overflow-y: auto;
         }
 
         .tooltip {
@@ -849,6 +888,7 @@
             border-bottom: 1px dashed #b89b7b;
             cursor: help;
         }
+        
         .tooltip:hover::after {
             content: attr(data-tooltip);
             position: absolute;
@@ -920,22 +960,172 @@
             box-shadow: none;
         }
 
-        .next-page-btn {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            z-index: 999;
-            display: none;
-        }
-
         @media (min-width: 700px) {
             .panel { padding: 24px; }
             .comic-btn { padding: 14px 28px; }
             .nav-dot { width: 60px; height: 60px; font-size: 24px; }
         }
+        .daynight-hint {
+            text-align: center;
+            margin: 16px 0;
+            font-size: clamp(18px, 3vw, 24px); 
+            color: black; 
+        }
+        .large-btn {
+            font-size: clamp(20px, 4vw, 28px) !important;
+            padding: 18px 36px !important;
+            min-width: 180px !important;
+        }
+
+        /* 图片弹窗样式（修复截断问题） */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 99999; /* 提高层级，确保在最上层 */
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+            padding: 20px; /* 给图片留边距，避免贴边 */
+        }
+
+        .image-modal img {
+            max-width: 95%;
+            max-height: 95vh; /* 限制最大高度，适配屏幕 */
+            width: auto;
+            height: auto;
+            object-fit: contain; /* 完整显示图片，不裁剪 */
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+
+        .image-modal .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #b28655;
+            color: white;
+            border: 2px solid #f5ecda;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999999;
+        }
+        .image-modal .close-btn:hover {
+            background: #8b6238;
+            transform: scale(1.05);
+        }
+        #page10 {
+            background: #f9f3e6;
+            background-image: radial-gradient(#e8d9bc 1px, transparent 1px);
+            background-size: 20px 20px;
+            padding: 28px 22px;
+            gap: 24px;
+        }
+        .stamp-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .stamp-count {
+            text-align: center;
+            font-size: clamp(14px, 2.5vw, 16px);
+            color: #5a4a36;
+            margin-bottom: 24px;
+        }
+        .stamp-book {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stamp {
+            background: #f0e6d2;
+            border: 2px solid #d4b890;
+            border-radius: 12px;
+            padding: 20px 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stamp.unlocked {
+            background: #e6f4d9;
+            border-color: #90be6d;
+        }
+        .stamp.locked {
+            opacity: 0.7;
+        }
+        .stamp-text {
+            font-size: clamp(13px, 2.2vw, 15px);
+            color: #5a4a36;
+        }
+        .master-btn {
+            width: 100%;
+            background: #f9eed9;
+            border: 3px solid #b59464;
+            border-radius: 24px;
+            padding: 14px 20px;
+            font-size: clamp(16px, 3vw, 19px);
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.06s linear;
+        }
+        .master-btn:active {
+            transform: translateY(5px);
+            box-shadow: none;
+        }
+
+        /* 亭阁全貌展开样式 - 适应网页 */
+        .pavilion-expand-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+        }
+        .pavilion-text-content {
+            width: 100%;
+        }
+        .pavilion-image-container {
+            width: 100%;
+            text-align: center;
+        }
+        .pavilion-image-container img {
+            max-width: 100%;
+            height: auto;
+            max-height: 60vh;
+            object-fit: contain;
+            border-radius: 12px;
+            cursor: zoom-in;
+        }
+        @media (min-width: 600px) {
+            .pavilion-expand-wrapper {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            .pavilion-text-content {
+                flex: 1;
+                min-width: 220px;
+            }
+            .pavilion-image-container {
+                flex: 1;
+                min-width: 220px;
+            }
+        }
     </style>
 </head>
 <body>
+
 <div class="comic-book" id="comicApp">
     <audio id="clickSound" preload="auto"><source src="音频/按钮音效.MP3" type="audio/mpeg"></audio>
     <audio id="successSound" preload="auto"><source src="音频/成功音效.mp3" type="audio/mpeg"></audio>
@@ -952,17 +1142,31 @@
         </div>
     </div>
 
-    <div class="page active" id="page1">
+    <!-- 封面页作为第0页 -->
+    <div class="page cover-page active" id="page0">
+        <div class="cover-content">
+            <h1 class="cover-title">广济桥 · 千年启合</h1>
+            <div class="cover-subtitle">世界最早的启闭式桥梁</div>
+            <div class="cover-intro">
+                南宋乾道七年，潮州太守曾汪临江而立，面对韩江急流，开启了一场跨越四百年的造桥传奇。
+                从「睡木沉基」到「十八梭船廿四洲」，一座可开可合的古桥，藏着宋代工匠最极致的智慧。
+                <br><br>
+                翻开这本交互漫画，亲手重建广济桥，见证它的千年沉浮。
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="page1">
+        <div class="panel-title"><b>临江之困 · 太守的难题</b></div>
         <div class="panel-grid">
             <div class="panel panel-large">
-                <div class="panel-title"> 临江之困 · 太守的难题</div>
-                <img src="计设——图片/第一页.jpg" alt="" loading="lazy">
-                <div class="speech-bubble">📜 工匠甲：江心水深流急，若要建石墩稳固浮桥，需选准位置！<br>📜 工匠乙：中流有一处浅滩，或可立石墩。</div>
-                <div class="speech-bubble">曾汪望着韩江怒涛，深知江心水深流急，若要建石墩稳固浮桥，桥址选址便是头等大事。工匠们各执一词，让他陷入了困境……</div>
+                <img src="assets/page_01_opening.jpg" alt="">
+                <div class="speech-bubble"><b>📜 工匠甲：江心水深流急，若要建石墩稳固浮桥，需选准位置！</b><br><b>📜 工匠乙：中流有一处浅滩，或可立石墩。</b></div>
+                <div class="speech-bubble"><b>曾汪望着韩江怒涛，深知江心水深流急，若要建石墩稳固浮桥，<br>桥址选址便是头等大事。工匠们各执一词，让他陷入了困境……</b></div>
             </div>
         </div>
         <div class="interact-zone">
-            <div class="interact-title">💡 点击江面上的标记，听取老船工建议</div>
+            <div class="interact-title">💡点击江面上的标记，听取老船工建议</div>
             <div class="river-map" style="height:180px; position:relative;">
                 <div class="river-dot" style="left:15%; top:50%;" data-card="cardShiNew">🔨</div>
                 <div class="river-dot" style="left:50%; top:40%;" data-card="cardZhongLiu">🎯</div>
@@ -975,10 +1179,10 @@
     </div>
 
     <div class="page" id="page2">
+        <div class="panel-title"> 潮涌韩江・桥承天险 </div>
         <div class="panel-grid">
             <div class="panel panel-large">
-                <div class="panel-title"> 潮涌韩江・桥承天险 </div>
-                <img src="计设——图片/第二页.jpg" width="100%" loading="lazy"></div>
+                <img src="assets/page_02_construction_start.jpg" width="100%"></div>
         </div>
         <div class="interact-zone">
             <div class="speech-bubble" style="background:#f0e0c0; text-align:center;">浮桥被洪水冲毁，曾汪该如何抉择？</div>
@@ -992,13 +1196,13 @@
     </div>
 
     <div class="page" id="page3">
-        <div class="panel-title">🪚 睡木沉基 · 宋代深水黑科技</div>
+        <div class="panel-title">睡木沉基 · 宋代深水黑科技</div>
         <div class="panel-grid">
             <div class="panel panel-large">
-                <img src="计设——图片/第三页补充.jpg" width="100%" loading="lazy"></div>
+                <img src="assets/page_03_pile_foundation_supplement.jpg" width="100%"></div>
         </div>
         <div class="model-container">
-            <img src="计设——图片/睡木沉基法剖面图.jpg" alt="" width="100%" loading="lazy">
+            <img src="assets/diagram_sleeping_wood_foundation.jpg" alt="" width="100%">
             
             <div class="layer-item">
                 <div class="layer-header" data-layer="bridge">
@@ -1051,33 +1255,39 @@
             </div>
         </div>
         
-        <div id="constructionVideo" class="video-container"><video controls><source src="视频/睡木沉基法过程.mp4" type="video/mp4" width="50%"></video></div>
+        <div id="constructionVideo" class="video-container"><video controls><source src="videos/sleeping_wood_foundation_process.mp4" type="video/mp4" width="50%"></video></div>
         <button class="comic-btn" id="animateBtn">▶ 播放施工全过程</button>
         <div class="badge">这项技术比西方早了三百年</div>
     </div>
 
         <div class="page" id="page4">
+        <div class="panel-title"> 两难之境・一梭通澜 </div>
         <div class="panel-grid">
             <div class="panel panel-large">
-                <div class="panel-title"> 两难之境・一梭通澜 </div>
-                <img src="计设——图片/第三页.jpg" width="100%" loading="lazy"></div>
+                <img src="assets/page_03_pile_foundation.jpg" width="100%"></div>
         </div>
         <div class="speech-bubble">东西两岸石梁桥相继完工，江心航道却成了新的难题：石桥不能断，货船不能堵。曾汪望着江面，一个大胆的构想浮现：用梭船连接两岸，可开可合！</div>
         <div class="interact-zone">
             <div class="interact-title">✨ 拖拽梭船体验启闭式</div>
-            <div class="speech-bubble">现在，请你亲手拖动梭船，完成广济桥的第一次合拢，见证这座启闭式古桥的诞生！</div>
-            <div class="drag-area-wrapper">
-                <div id="dragBoat" class="drag-ship" draggable="true">
-                    <img src="计设——图片/抠图浮桥.png" alt="梭船" loading="lazy">
+            <div class="speech-bubble">请你亲手拖动梭船，完成广济桥的第一次合拢，见证这座启闭式古桥的诞生！</div>
+            
+            <!-- 原生拖拽（稳定、不飘） -->
+            <div style="text-align:center; margin:20px 0;">
+                <div id="dragSource" draggable="true" style="display:inline-block; padding:14px 24px; background:#f5e8d4; border:3px solid #c9ab7b; border-radius:20px; cursor:grab;">
+                    <img src="assets/asset_floating_bridge_cutout.png" style="height:80px;" alt="梭船">
                     <div>🛶 梭船</div>
                 </div>
-                <div id="bridgeGap" class="bridge-gap">
-                    <img src="计设——图片/缺口浮桥.png" alt="缺口" loading="lazy">
+
+                <div style="margin:14px 0; font-weight:bold;">👇</div>
+
+                <div id="dropTarget" style="display:inline-block; padding:20px 40px; background:#cdb894; border:3px dashed #b59464; border-radius:20px;">
+                    <img src="assets/diagram_floating_bridge_gap.png" style="height:80px;" alt="缺口">
                     <div>⬜ 缺口</div>
                 </div>
             </div>
+
             <div id="completedBridge" class="completed-bridge">
-                <img src="计设——图片/合拢后的广济桥.png" alt="合拢后的广济桥" style="max-width:80%;" loading="lazy">
+                <img src="assets/scene_completed_bridge.png" alt="合拢后的广济桥" style="max-width:80%;">
             </div>
             <div id="dragTip" style="text-align:center; padding:12px; background:#f3e5ca; border-radius:40px;">👉 拖动梭船到缺口处</div>
         </div>
@@ -1086,21 +1296,21 @@
 
     <div class="page" id="page5">
         <div class="panel-grid">
-            <div class="panel panel-large">🛶 东西石梁桥，中间梭船数十艘相连，明代定型为"十八梭船廿四洲"
-                <img src="计设——图片/第五页补充.jpg" alt="" loading="lazy">
+            <div class="panel panel-large">🛶东西石梁桥，中间梭船数十艘相连，明代定型为"十八梭船廿四洲"
+                <img src="assets/page_05_beam_install_supplement.jpg" alt="">
             </div>
         </div>
-        <div style="text-align: center; margin: 16px 0;">← 滑动切换昼夜 →</div>
+        <div class="daynight-hint">← 滑动切换昼夜 →</div>
         <input type="range" id="dayNightSlider" min="0" max="100" value="0" style="width:100%; margin:16px 0;">
         
         <div id="dayScene" class="daynight-scene" style="background:#FFE4B5;">
-            <img src="计设——图片/第四幕第五页白天模式.jpg" width="100%" loading="lazy">
+            <img src="assets/page_04_beam_lifting_day.jpg" width="100%">
             <div style="margin:12px 0;">🌞 白天模式：梭船放下，百姓挑担赶集，桥上热闹非凡</div>
             <button class="comic-btn" id="daySceneBtn">点击行人 → 宋代市井生活</button>
         </div>
         
         <div id="nightScene" class="daynight-scene" style="display:none; background:#2c3e50;">
-            <img src="计设——图片/第四幕第五页黑夜模式.jpg" width="100%" loading="lazy">
+            <img src="assets/page_04_beam_lifting_night.jpg" width="100%">
             <div style="margin:12px 0; color:#ffd966;">🌙 黑夜模式：梭船拉开，盐船点着灯笼缓缓通过</div>
             <button class="comic-btn" id="nightSceneBtn">点击盐船 → 宋代盐运贸易</button>
         </div>
@@ -1112,13 +1322,15 @@
     </div>
 
     <div class="page" id="page6">
-        <div class="panel-title">📅 千年演变 · 历代接力建桥</div>
+        <div class="panel-title">千年演变 · 历代接力建桥</div>
         <div class="speech-bubble" style="margin-bottom:20px;">从南宋乾道七年（1171年）曾汪奠基，到明代嘉靖九年（1530年）最终定型，近400年里，一代代潮州官员与工匠前赴后继，才铸就了这座「世界最早启闭式桥梁」。</div>
         <div class="panel-grid">
             <div class="panel panel-large">
-                <img src="计设——图片/第六页补充.jpg" width="100%" loading="lazy"></div>
+                <img src="assets/page_06_floating_bridge_supplement.jpg" width="100%"></div>
         </div>
+        <!-- 单列布局 + 左滑展开 -->
         <div class="person-grid" id="personGrid">
+            <div style="text-align:center; margin-top:16px; font-size:14px; color:#8b6f4c; font-style:italic;">点击人物卡片，解锁历代建桥者的完整故事</div>
             <div class="person-card" data-person="zengwang">
                 <h4>👤 曾汪（1171年）</h4>
                 <div class="person-desc">身份：南宋潮州知州，广济桥的奠基者</div>
@@ -1126,7 +1338,7 @@
                     <strong>建桥事迹</strong>：<br>
                     - 乾道七年（1171年），在韩江江心修筑梭形石墩（长宽各五十尺，两端尖锐以分水势），并以铁链连接86艘巨船，建成浮桥，初名康济桥，结束了韩江两岸仅靠摆渡的历史。<br>
                     - 亲自督工，三个月完成工程，集资二十万钱，开启了广济桥近千年的建造序幕。<br>
-                    <br><strong>历史意义</strong>：广济桥的起点，奠定了“石墩+浮桥”的核心形制。
+                    <br><strong>历史意义</strong>：广济桥的起点，奠定了"石墩+浮桥"的核心形制。
                 </div>
             </div>
 
@@ -1136,7 +1348,7 @@
                 <div class="person-expand">
                     <strong>建桥事迹</strong>：<br>
                     - 淳熙十六年（1189年），在广济桥西段增建4座石墩，使西岸形成8洲7孔的稳固梁桥，架木为梁、覆屋为亭，大幅提升通行安全。<br>
-                    - 百姓感念其功绩，将西桥称为“丁侯桥”。<br>
+                    - 百姓感念其功绩，将西桥称为"丁侯桥"。<br>
                     <br><strong>历史意义</strong>：西段梁桥的核心建设者，让广济桥西段形成完整的石梁结构。
                 </div>
             </div>
@@ -1146,9 +1358,9 @@
                 <div class="person-desc">身份：南宋常州进士，潮州知州</div>
                 <div class="person-expand">
                     <strong>建桥事迹</strong>：<br>
-                    - 绍熙五年（1194年），“蟠石东岸”，在韩江东岸修筑石墩，建造盖秀亭，将东桥命名为济川桥。<br>
-                    - 首次在中间江面设置由18艘木船连接的浮桥，完整实现“梁桥+浮桥”的组合形制。<br>
-                    <br><strong>历史意义</strong>：开启东段梁桥建设，完成广济桥“东西桥+中浮桥”的基本框架。
+                    - 绍熙五年（1194年），"蟠石东岸"，在韩江东岸修筑石墩，建造盖秀亭，将东桥命名为济川桥。<br>
+                    - 首次在中间江面设置由18艘木船连接的浮桥，完整实现"梁桥+浮桥"的组合形制。<br>
+                    <br><strong>历史意义</strong>：开启东段梁桥建设，完成广济桥"东西桥+中浮桥"的基本框架。
                 </div>
             </div>
 
@@ -1158,41 +1370,41 @@
                 <div class="person-expand">
                     <strong>建桥事迹</strong>：<br>
                     - 开庆元年（1259年），主持广济桥修缮，造新舟24艘，用70丈铁缆从旁翼贯连浮桥，使浮桥结构更稳固。<br>
-                    - 完善了浮桥的连接与防护，基本奠定了广济桥“十八梭船廿四洲”的后世格局。<br>
+                    - 完善了浮桥的连接与防护，基本奠定了广济桥"十八梭船廿四洲"的后世格局。<br>
                     <br><strong>历史意义</strong>：南宋最后一位关键建桥者，让广济桥的浮桥系统趋于成熟稳定。
                 </div>
             </div>
 
             <div class="person-card" data-person="mingdai">
-                <h4>✨ 明代（1530年）</h4>
-                <div class="person-desc">身份：明代工匠与官员</div>
+                <h4>✨ 明代工匠与官员（1530年）</h4>
+                <div class="person-desc">&nbsp;</div>
                 <div class="person-expand">
                     <strong>建桥事迹</strong>：<br>
-                    - 明代嘉靖年间（1530年），最终定型为“十八梭船廿四洲”经典格局。<br>
+                    - 明代嘉靖年间（1530年），最终定型为"十八梭船廿四洲"经典格局。<br>
                     - 桥墩增至24座，梭船减至18艘，形成梁舟结合、启闭自如的独特形制。<br>
-                    <br><strong>历史意义</strong>：广济桥最终定型，成为世界上第一座启闭式桥梁，被誉为“中国四大古桥”之一。
+                    <br><strong>历史意义</strong>：广济桥最终定型，成为世界上第一座启闭式桥梁，被誉为"中国四大古桥"之一。
                 </div>
             </div>
         </div>
     </div>
 
     <div class="page" id="page7">
-        <div class="panel-title" style="text-align:center;">🔐 建筑密码 · 完成谜题解锁成就</div>
+        <div class="panel-title" style="text-align:center;">建筑密码 · 完成谜题解锁成就</div>
         <div class="speech-bubble" style="margin-top:20px; text-align:center;">近400年的接力建桥，不仅留下了一座传世古桥，更藏着宋代工匠们对抗自然、巧夺天工的建筑智慧。想知道他们是如何解决水流、通航、架梁等难题的吗？解出下面的谜题就能知晓答案了</div>
         <div class="quiz-card">
             <div class="quiz-title"> 谜题一：桥墩间距</div>
-            <div class="quiz-question">水流越急，桥墩间距应该 <strong>____？</strong></div>
+            <div class="quiz-question">广济桥工匠需根据韩江水流设计桥墩间距，水流越急，桥墩间距应该<strong>____？</strong></div>
             <div class="quiz-options">
-                <div class="quiz-option" data-quiz1="wide" data-correct="wide">越宽</div>
-                <div class="quiz-option" data-quiz1="narrow" data-correct="wrong">越窄</div>
-                <div class="quiz-option" data-quiz1="same" data-correct="wrong">不变</div>
+                <div class="quiz-option" data-quiz1="wide" data-correct="wide">【越宽】</div>
+                <div class="quiz-option" data-quiz1="narrow" data-correct="wrong">【越窄】</div>
+                <div class="quiz-option" data-quiz1="same" data-correct="wrong">【不变】</div>
             </div>
             <div id="quiz1Feedback" class="quiz-feedback"></div>
         </div>
         
         <div class="quiz-card">
             <div class="quiz-title"> 谜题二：船数变化</div>
-            <div class="quiz-question">广济桥梭船数量由什么决定？</div>
+            <div class="quiz-question">广济桥浮桥初建时为 24 艘梭船，明代后调整为 18 艘，形成 “十八梭船廿四洲” 的经典形制。请问：广济桥梭船的数量由什么决定？</div>
             <div class="quiz-options">
                 <div class="quiz-option" data-quiz2="hydrology" data-correct2="hydrology"> 水文水深测算</div>
                 <div class="quiz-option" data-quiz2="buddhism" data-correct2="wrong"> 佛教吉祥数</div>
@@ -1203,16 +1415,28 @@
         
         <div class="quiz-card">
             <div class="quiz-title"> 谜题三：浮运架梁</div>
-            <div style="text-align:center; margin-bottom:16px;">万斤石梁如何架上桥墩？拖动石梁完成安装</div>
-            <div class="double-drag-area">
-                <div id="dragLeftItem" class="drag-left" draggable="true"><div> 石梁</div><img src="计设——图片/p9-石梁.png" alt="石梁" loading="lazy"></div>
-                <div id="dropRightArea" class="drag-right"><div>🏛️ 桥墩</div><img src="计设——图片/p9-石墩.png" alt="石墩" loading="lazy"></div>
+            <div style="text-align:center; margin-bottom:16px;">广济桥的万斤石梁，如何在没有现代起重机的情况下架上桥墩？<br>请拖动石梁，完成石梁架设。</div>
+            
+            <!-- 改为和第四页一样的原生拖拽方式 -->
+            <div style="text-align:center; margin:20px 0;">
+                <div id="dragBeam" draggable="true" style="display:inline-block; padding:14px 24px; background:#f5e8d4; border:3px solid #c9ab7b; border-radius:20px; cursor:grab;">
+                    <img src="assets/diagram_stone_beam.png" style="height:80px;" alt="石梁">
+                    <div>🪨 石梁</div>
+                </div>
+
+                <div style="margin:14px 0; font-weight:bold;">👇</div>
+
+                <div id="dropPier" style="display:inline-block; padding:20px 40px; background:#cdb894; border:3px dashed #b59464; border-radius:20px;">
+                    <img src="assets/diagram_stone_pier.png" style="height:80px;" alt="桥墩">
+                    <div>🏛️ 桥墩</div>
+                </div>
             </div>
+
             <div id="beamStatus" class="beam-status">💡 等待安装石梁...</div>
-            <div id="successBox" class="success-box"><img src="计设——图片/p9-架梁成功.jpg" width="100%" loading="lazy"></div>
+            <div id="successBox" class="success-box"><img src="assets/diagram_beam_lifting_success.jpg" width="100%"></div>
             <div id="quiz3Feedback" class="quiz-feedback"></div>
         </div>
-        <div id="videoContainer" class="video-container"><video controls><source src="视频/浮运架梁法.mp4" type="video/mp4"></video></div>
+        <div id="videoContainer" class="video-container"><video controls><source src="videos/beam_lifting_method.mp4" type="video/mp4" width="50%"></video></div>
     </div>
 
     <div class="page" id="page8">
@@ -1225,49 +1449,49 @@
         </div>
         <div class="ending-scene" id="endingA">
             <h3>🏔️ 全石桥结局</h3>
-            <div class="ending-img"><img src="计设——图片/全石桥.jpg" width="100%" loading="lazy"></div>
-            <div class="badge">成就：石匠的坚持</div>
-            <audio id="audioA" preload="auto" style="display:none;"><source src="音频/全石桥结局.mp3" type="audio/mpeg"></audio>
+            <div class="speech-bubble" style="margin-top:20px; text-align:center;">历经百年，全石拱桥终于落成，这是潮州三代人倾尽心血铸就的工程奇迹。可石墩横亘江面，大船再难通行，盐运被迫改走泥泞陆路，运输成本陡增三倍。往来百姓却只能低声叹息：桥是好桥，可船，再也过不去了。你以执念铸就了古桥的丰碑，却也让千年韩江的航运，陷入了两难的困境。</div>
+            <div class="ending-img"><img src="assets/page_08_full_stone_bridge_end.png" width="100%"></div>
+            <audio id="audioA" preload="auto" style="display:none;"><source src="audios/ending_full_stone_bridge.mp3" type="audio/mpeg"></audio>
         </div>
         <div class="ending-scene" id="endingB">
             <h3>🌊 全浮桥结局</h3>
-            <div class="ending-img"><img src="计设——图片/全浮桥.jpg" width="100%" loading="lazy"></div>
-            <div class="badge">成就：随波逐流</div>
-            <audio id="audioB" preload="auto" style="display:none;"><source src="音频/全浮桥结局.mp3" type="audio/mpeg"></audio>
+            <div class="speech-bubble" style="margin-top:20px; text-align:center;">每年汛期过后，百姓都要重新搭建浮桥，岁岁辛劳，从未停歇。一场特大洪水袭来，浮桥尽数冲毁，重建费用耗尽了潮州府库，民生维艰。岸边，老船工望着满江残木，一声长叹：年年建，年年毁，这日子，何时才是个头？你当年的选择，省下了初期的投入，却让后世子孙，背负了无尽的维护之苦。</div>
+            <div class="ending-img"><img src="assets/page_08_full_floating_bridge_end.png" width="100%"></div>
+            <audio id="audioB" preload="auto" style="display:none;"><source src="audios/ending_full_floating_bridge.mp3" type="audio/mpeg"></audio>
         </div>
         <div class="ending-scene" id="endingC">
             <h3>✨ 启闭式结局</h3>
             <div class="scene-desc">曾汪→丁允元→沈宗禹→林光世→明代定型，千年传奇！</div>
-            <div class="ending-img"><img src="计设——图片/启闭式结局.jpg" width="100%" loading="lazy"></div>
+            <div class="speech-bubble" style="margin-top:20px; text-align:center;">曾汪奠基，丁元筑墩，历代迭代，明代定型。启闭式广济桥，昼通人，夜通船，成就千年传奇。一座桥，一座城，一段中国古桥的智慧史诗。</div>
+            <div class="ending-img"><img src="assets/ending_opening_closing.jpg" width="100%"></div>
             <div class="bridge-link-box"><a href="http://vip.people.com.cn/albumsDetail?aid=1370011&pid=9569595" target="_blank" class="bridge-btn">📸 查看广济桥实景照片</a></div>
             <div class="badge">🏆 真正懂桥的人</div>
-            <audio id="audioC" preload="auto" style="display:none;"><source src="音频/启闭式结局.mp3" type="audio/mpeg"></audio>
+            <audio id="audioC" preload="auto" style="display:none;"><source src="audios/ending_opening_closing.mp3" type="audio/mpeg"></audio>
         </div>
     </div>
 
     <div class="page" id="page9">
-        <a href="https://www.xiangqiao.gov.cn/xqqly/xqjqjd/content/post_3439062.html" target="_blank"><div class="card-header"> 广济桥 · 百科知识</div></a>
-        <div class="speech-bubble" style="margin-top:20px; text-align:center;">你已经见证了广济桥的不同命运！而在真实历史中，它最终成为了「十八梭船廿四洲」的启闭式古桥，被誉为中国四大古桥之一。现在，让我们一起解锁它的全部知识，读懂这座桥的千年智慧。</div>
+    <div class="card-header">🌉 广济桥 · 百科知识</div>
+    <div class="speech-bubble" style="margin-top:20px; text-align:center;">你已经见证了广济桥的不同命运！而在真实历史中，它最终成为了「十八梭船廿四洲」的启闭式古桥，被誉为中国四大古桥之一。现在，让我们一起解锁它的全部知识，读懂这座桥的千年智慧。</div>
     <div class="panel-grid">
         <div class="panel" onclick="toggleExpand(this)">
-            <a href="https://www.zjtcn.com/baike/gjqjzjg#catalog_index3" target="_blank"><div class="card-header"> 桥梁结构</div></a>
-            
-            <p>东西石梁桥 + 18艘梭船<br><strong>“十八梭船廿四洲”</strong></p>
+            <div class="card-header">🏗️ 桥梁结构</div>
+            <p>东西石梁桥 + 18艘梭船<br><strong>"十八梭船廿四洲"</strong></p>
             <div class="expand-content">
-                <p>广济桥由东西两段石梁桥和中间18艘梭船组成，形成“廿四洲”的独特格局。东西石梁桥固定连接两岸，中间梭船可开合，既保障陆路通行，又满足韩江通航需求。</p>
+                <p>广济桥由东西两段石梁桥和中间18艘梭船组成，形成"廿四洲"的独特格局。东西石梁桥固定连接两岸，中间梭船可开合，既保障陆路通行，又满足韩江通航需求。</p>
             </div>
         </div>
 
         <div class="panel" onclick="toggleExpand(this)">
-            <a href="http://www.kepu.gov.cn/expert/jiliping/2025-12/05/content_442473.html" target="_blank"><div class="card-header"> 启闭智慧</div></a>
-            <p>白天合桥，夜晚开船<br><strong>世界最早“开合桥”</strong></p>
+            <a href="http://www.kepu.gov.cn/expert/jiliping/2025-12/05/content_442473.html" target="_blank"><div class="card-header">⚓ 启闭智慧</div></a>
+            <p>白天合桥，夜晚开船<br><strong>世界最早"开合桥"</strong></p>
             <div class="expand-content">
                 <p>白天梭船连接成桥，供行人车马通行；夜晚或涨潮时解开缆绳，开启航道让大船通过。这种设计比西方同类开合桥早近700年，是古代水利与交通智慧的典范。</p>
             </div>
         </div>
 
         <div class="panel" onclick="toggleExpand(this)">
-            <div class="card-header"> 建造绝技</div>
+            <div class="card-header">🛠️ 建造绝技</div>
             <ul style="padding-left:20px;">
                 <li><span class="tooltip" data-tooltip="将整排松木沉入江底作地基，防潮抗震，是古代软土地基处理的智慧结晶">睡木沉基</span></li>
                 <li><span class="tooltip" data-tooltip="利用潮水涨落，将巨型石梁浮运至桥位精准架设，无需大型起重设备">浮运架梁</span></li>
@@ -1279,7 +1503,7 @@
         </div>
 
         <div class="panel" onclick="toggleExpand(this)">
-            <div class="card-header"> 历史地位</div>
+            <div class="card-header">🏛️ 历史地位</div>
             <p><strong>四大古桥之一</strong></p>
             <div class="expand-content">
                 <p>与赵州桥、卢沟桥、洛阳桥并称中国四大古桥。始建于南宋乾道七年（1171年），位于广东潮州韩江，是全国重点文物保护单位，也是潮州文化旅游的核心名片。</p>
@@ -1288,52 +1512,50 @@
     </div>
 
     <div class="panel" onclick="toggleExpand(this)">
-    <div class="card-header">🏮 广济桥·亭阁全貌</div>
-    <div class="expand-content" style="max-height: 0; padding: 0;">
-        <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start;">
-            <div style="flex: 1; min-width: 220px; height: auto; overflow: visible;">
-                <p>广济桥全桥共有<strong>12座亭阁</strong>，分布在24个桥墩之上，是中国古桥中亭阁最多、最华丽的桥梁。</p>
-                <p style="margin:8px 0;">• 全部为<strong>潮汕殿式风格</strong>，重檐歇山顶</p>
-                <p style="margin:8px 0;">• 屋顶带<strong>燕尾脊</strong>，极具岭南特色</p>
-                <p style="margin:8px 0;">• 桥亭可<strong>遮阳、避雨、观景、休息</strong></p>
-                <p style="margin:8px 0;">• 中间最大一座为<strong>广济殿</strong>，是全桥核心</p>
-                <p style="margin-top:12px; font-weight:bold;">一桥二十四墩，一墩一亭，亭亭不同，是世界桥梁建筑奇观！</p>
-            </div>
-            <div style="flex: 1; min-width: 220px; text-align: center;">
-                <img id="pavilionFullImg" 
-                     src="计设——图片/桥亭.png" 
-                     style="width:100%; border-radius:12px; cursor: zoom-in;"
-                     onclick="openPavilionImage(event)" loading="lazy">
+        <div class="card-header">🏮 广济桥·亭阁全貌</div>
+        <div class="expand-content">
+            <div class="pavilion-expand-wrapper">
+                <div class="pavilion-text-content">
+                    <p>广济桥全桥共有<strong>12座亭阁</strong>，分布在24个桥墩之上，是中国古桥中亭阁最多、最华丽的桥梁。</p>
+                    <p style="margin:8px 0;">• 全部为<strong>潮汕殿式风格</strong>，重檐歇山顶</p>
+                    <p style="margin:8px 0;">• 屋顶带<strong>燕尾脊</strong>，极具岭南特色</p>
+                    <p style="margin:8px 0;">• 桥亭可<strong>遮阳、避雨、观景、休息</strong></p>
+                    <p style="margin:8px 0;">• 中间最大一座为<strong>广济殿</strong>，是全桥核心</p>
+                    <p style="margin-top:12px; font-weight:bold;">一桥二十四墩，一墩一亭，亭亭不同，是世界桥梁建筑奇观！</p>
+                </div>
+                <div class="pavilion-image-container">
+                    <img id="pavilionFullImg" 
+                         src="assets/asset_bridge_pavilion.png" 
+                         alt="广济桥亭阁全貌"
+                         style="width:100%; border-radius:12px; cursor: zoom-in;"
+                         onclick="openPavilionImage(event)">
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <div style="text-align:center; margin-top:16px; font-size:12px; color:#8b6f4c;">
         💡 点击卡片查看详情
     </div>
 </div>
 
+    <!-- 集章册第10页 -->
     <div class="page" id="page10">
-        <div class="panel-grid">
-            <div class="panel panel-large">
-                <img src="计设——图片/结尾.png" width="100%" loading="lazy"></div>
-        </div>
         <div class="stamp-header"><span class="stamp-icon">📚</span><h3>集章册</h3></div>
         <div class="stamp-count">已收集 0/9 枚印章</div>
         <div class="stamp-book" id="stampBook"></div>
         <button class="master-btn" id="claimMasterBtn">获得 "宋代造桥匠人" 称号</button>
     </div>
 
-    <div class="nav-dots" id="navDots">
-        <div class="nav-dot" data-page="1">1</div><div class="nav-dot" data-page="2">2</div><div class="nav-dot" data-page="3">3</div>
-        <div class="nav-dot" data-page="4">4</div><div class="nav-dot" data-page="5">5</div><div class="nav-dot" data-page="6">6</div>
-        <div class="nav-dot" data-page="7">7</div><div class="nav-dot" data-page="8">8</div>
-        <div class="nav-dot" data-page="9">9</div>
-        <div class="nav-dot" data-page="10">10</div>
+    <!-- 新版分页：← 第 X 页 / 共 10 页 → -->
+    <div class="page-nav">
+        <div class="page-nav-arrow" id="prevPage">←</div>
+        <div class="page-nav-text" id="pageNumText">&nbsp;</div>
+        <div class="page-nav-arrow" id="nextPage">→</div>
     </div>
 </div>
 
+<!-- 视频弹窗 -->
 <div class="video-modal" id="videoModal">
     <div class="video-modal-content">
         <span class="video-modal-close" onclick="closeVideoModal()">×</span>
@@ -1343,6 +1565,18 @@
 </div>
 
 <script>
+const TOTAL_PAGES = 11;
+let currentPage = 0;
+let stamps = {};
+
+function startComic() {
+    document.getElementById('coverPage').classList.remove('show');
+    setTimeout(() => {
+        document.getElementById('coverPage').style.display = 'none';
+        document.querySelector('.comic-book').classList.add('show');
+    }, 500);
+}
+
 function closeFloatText() {
     document.getElementById('floatTextOverlay').classList.remove('show');
 }
@@ -1350,26 +1584,29 @@ function closeFloatText() {
 function toggleExpand(element) {
     const expandContent = element.querySelector('.expand-content');
     if (expandContent) {
-        const isPavilion = element.querySelector('.card-header')?.textContent.includes('亭阁全貌');
         if (expandContent.classList.contains('show')) {
             expandContent.classList.remove('show');
             expandContent.style.maxHeight = '0';
             expandContent.style.padding = '0';
         } else {
             expandContent.classList.add('show');
-            if (isPavilion) {
-                expandContent.style.maxHeight = 'none';
-            } else {
-                expandContent.style.maxHeight = '220px';
-            }
+            expandContent.style.maxHeight = '500px';
             expandContent.style.padding = '14px';
         }
     }
 }
 
+function showPavilionImage() {
+    const img = document.getElementById('pavilionFullImg');
+    img.style.display = img.style.display === 'none' ? 'block' : 'none';
+}
+
+// 第六页人物卡片：左滑展开逻辑
 function initPersonCards() {
     const personCards = document.querySelectorAll('.person-card');
     let currentExpandedCard = null;
+    let openedCount = 0;
+    const total = personCards.length;
     
     personCards.forEach(card => {
         card.addEventListener('click', function(e) {
@@ -1380,12 +1617,18 @@ function initPersonCards() {
                 currentExpandedCard.querySelector('.person-expand').classList.remove('show');
             }
             
+            const wasShow = expandDiv.classList.contains('show');
             expandDiv.classList.toggle('show');
-            currentExpandedCard = expandDiv.classList.contains('show') ? this : null;
+            currentExpandedCard = !wasShow ? this : null;
             
-            stamps['历代接力'] = true;
-            updateStamps();
-            showAchievement("解锁·历代建桥史");
+            if(!wasShow){
+                openedCount++;
+                if(openedCount >= total && !stamps['历代接力']){
+                    stamps['历代接力'] = true;
+                    updateStamps();
+                    showAchievement("解锁·历代接力");
+                }
+            }
         });
     });
 }
@@ -1393,50 +1636,45 @@ function initPersonCards() {
 function openPavilionImage(event) {
     event.stopPropagation();
     const imgSrc = event.target.src;
+
+    // 1. 先移除已存在的弹窗（避免重复创建）
+    const existingModal = document.querySelector('.image-modal');
+    if (existingModal) existingModal.remove();
+
+    // 2. 创建新的弹窗容器
     const modal = document.createElement('div');
-    modal.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.85); z-index: 9999;
-        display: flex; align-items: center; justify-content: center;
-        padding: 20px;
-    `;
+    modal.className = 'image-modal';
     modal.innerHTML = `
-        <div style="position: relative; max-width: 90%; max-height: 90%;">
-            <img src="${imgSrc}" style="width: 100%; height: auto; border-radius: 12px;" loading="lazy">
-            <button onclick="this.parentElement.parentElement.remove()" 
-                    style="position: absolute; top: -15px; right: -15px;
-                           width: 40px; height: 40px; border-radius: 50%;
-                           background: #b28655; color: white; border: 2px solid #f5ecda;
-                           font-size: 24px; cursor: pointer; display: flex;
-                           align-items: center; justify-content: center;">
-                ×
-            </button>
-        </div>
+        <div class="close-btn" onclick="event.stopPropagation(); this.parentElement.remove();">×</div>
+        <img src="${imgSrc}" alt="广济桥亭阁">
     `;
+
+    // 3. 点击遮罩层关闭弹窗
+    modal.addEventListener('click', () => modal.remove());
+
+    // 4. 插入到页面并显示
     document.body.appendChild(modal);
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.remove();
-    });
+    modal.style.display = 'flex';
+}
+
+function unlockStoneCraft(){
+    if(!stamps['石砌工艺']){
+        stamps['石砌工艺'] = true;
+        updateStamps();
+        showAchievement("解锁·石砌工艺");
+    }
 }
 
 (function() {
-    let stamps = {
-        '睡木沉基': false,
-        '梭船连接': false,
-        '浮运架梁': false,
-        '石砌工艺': false,
-        '铁锚固定': false,
-        '水文观测': false,
-        '历代接力': false,
-        '启闭设计': false,
-        '宋代船数演变': false
+    stamps = {
+        '睡木沉基': false, '梭船连接': false, '浮运架梁': false,
+        '石砌工艺': false, '亭阁结构': false, '水文观测': false,
+        '历代接力': false, '启闭设计': false, '宋代船数演变': false
     };
-    
     let currentPlayingAudio = null;
     let bgmPage6 = document.getElementById('bgmPage6');
     let bgmPage9 = document.getElementById('bgmPage9');
     const floatTextOverlay = document.getElementById('floatTextOverlay');
-    let userInteracted = false;
 
     function playSound(soundId) {
         let s = document.getElementById(soundId);
@@ -1463,49 +1701,59 @@ function openPavilionImage(event) {
     }
 
     const pages = document.querySelectorAll('.page');
-    const dots = document.querySelectorAll('.nav-dot');
-    
-    function showPage(id) {
-        stopAllBgm();
-        pages.forEach(p=>p.classList.remove('active'));
-        const targetPage = document.getElementById('page'+id);
-        if(targetPage) {
-            targetPage.classList.add('active');
-            targetPage.scrollTop = 0;
+    const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+    const pageText = document.getElementById('pageNumText');
+
+    // 统一更新页码文字：封面页 / 第1页…第10页
+    function updatePagination() {
+        if (currentPage === 0) {
+            pageText.textContent = "";
+        } else {
+            pageText.textContent = `第 ${currentPage} 页 / 共 10 页`;
         }
-        dots.forEach(d=>d.classList.remove('active'));
-        let active = Array.from(dots).find(d=>d.dataset.page==id);
-        if(active) active.classList.add('active');
+        prevBtn.classList.toggle('disabled', currentPage <= 0);
+        nextBtn.classList.toggle('disabled', currentPage >= TOTAL_PAGES - 1);
+    }
+
+    function showPage(id) {
+        id = Number(id);
+        if (id < 0 || id >= TOTAL_PAGES) return;
+        
+        stopAllBgm();
+        pages.forEach(p => p.classList.remove('active'));
+        document.getElementById(`page${id}`)?.classList.add('active');
+        currentPage = id;
+        updatePagination();
         
         if(id == 3) {
             setTimeout(showFloatText, 300);
         }
         
-        if(userInteracted){
-            if(id == 6 && bgmPage6) { bgmPage6.play().catch(e=>{}); }
-            if(id == 9 && bgmPage9) { bgmPage9.play().catch(e=>{}); }
-        }
+        if(id == 7 && bgmPage6) { bgmPage6.play().catch(e=>{}); }
+        if(id == 10 && bgmPage9) { bgmPage9.play().catch(e=>{}); }
         
         if(currentPlayingAudio) {
             currentPlayingAudio.pause();
             currentPlayingAudio.currentTime = 0;
             currentPlayingAudio = null;
         }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    dots.forEach(d=>{
-        d.addEventListener('click',e=>{
-            userInteracted = true;
-            playClick();
-            showPage(e.target.dataset.page);
-        });
+    prevBtn.addEventListener('click', () => {
+        if (currentPage <= 0) return;
+        playClick();
+        showPage(currentPage - 1);
+    });
+    nextBtn.addEventListener('click', () => {
+        if (currentPage >= TOTAL_PAGES - 1) return;
+        playClick();
+        showPage(currentPage + 1);
     });
 
-    document.querySelectorAll('.comic-btn, .timeline-era, .river-dot, .quiz-option, .panel, .person-card, .master-btn, .bridge-btn, .continue-btn').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-            userInteracted = true;
-            playClick();
-        });
+    document.querySelectorAll('.comic-btn, .timeline-era, .river-dot, .quiz-option, .panel, .person-card, .master-btn, .bridge-btn, .start-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>{ playClick(); });
     });
 
     initPersonCards();
@@ -1589,8 +1837,8 @@ function openPavilionImage(event) {
     const videoCaption = document.getElementById('videoCaption');
     const videoModalClose = document.querySelector('.video-modal-close');
     const videoSources = { 
-        life: '视频/宋代市井生活.mp4', 
-        salt: '视频/宋代盐运贸易.mp4' 
+        life: 'videos/song_dynasty_market_life.mp4', 
+        salt: 'videos/song_dynasty_salt_trade.mp4' 
     };
     
     function openVideo(src, cap) {
@@ -1625,7 +1873,7 @@ function openPavilionImage(event) {
             let fb=document.getElementById('quiz1Feedback');
             let isCorrect = opt.getAttribute('data-correct') === 'wide';
             if(isCorrect){
-                fb.innerHTML='✅ 正解！水流越急，桥墩间距应越宽！'; fb.className='quiz-feedback correct show';
+                fb.innerHTML='✅ 正解！水流越急，对桥墩的冲击力越强，加宽间距可减小水流冲击，保障桥梁安全，这是广济桥历经千年不倒的关键设计智慧之一。'; fb.className='quiz-feedback correct show';
                 stamps['水文观测']=true; updateStamps(); showAchievement("解锁·水文智慧");
             }else{
                 fb.innerHTML='❌ 再试试！水流越急需要更大间距'; fb.className='quiz-feedback wrong show';
@@ -1639,7 +1887,7 @@ function openPavilionImage(event) {
             let fb=document.getElementById('quiz2Feedback');
             let isCorrect = opt.getAttribute('data-correct2') === 'hydrology';
             if(isCorrect){
-                fb.innerHTML='✅ 正解！江面宽度决定船数，水文测算是关键！'; fb.className='quiz-feedback correct show';
+                fb.innerHTML='✅ 正解！梭船数量由古代工匠根据韩江河道宽度、水深流速等水文条件精准测算确定，随河道变化调整，而非宗教或皇权因素。'; fb.className='quiz-feedback correct show';
                 stamps['宋代船数演变']=true; updateStamps(); showAchievement("解锁·船数奥秘");
             }else{
                 fb.innerHTML='❌ 再想想！船数变化与水文水深有关'; fb.className='quiz-feedback wrong show';
@@ -1648,53 +1896,73 @@ function openPavilionImage(event) {
         });
     });
 
-    let dragLeft=document.getElementById('dragLeftItem');
-    let dropRight=document.getElementById('dropRightArea');
-    let beamStatusDiv=document.getElementById('beamStatus');
-    let successBox=document.getElementById('successBox');
-    let videoContainer=document.getElementById('videoContainer');
-    let beamSuccess=false;
-    if(dragLeft&&dropRight){
-        dragLeft.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain','beam'));
-        dropRight.addEventListener('dragover',e=>e.preventDefault());
-        dropRight.addEventListener('drop',e=>{
-            if(!beamSuccess){
-                beamSuccess=true;
-                dragLeft.style.opacity='0.5'; dragLeft.draggable=false;
-                dropRight.classList.add('dropped');
-                dropRight.innerHTML='<div>🏛️ ✅ 石梁已成功安装！</div><img src="计设——图片/p9-石墩.png" width="80%" loading="lazy">';
-                if(beamStatusDiv) beamStatusDiv.style.display = 'none';
-                successBox.classList.add('show'); videoContainer.classList.add('show');
-                stamps['浮运架梁']=true; updateStamps(); playSuccess(); showAchievement("解锁·浮运架梁");
-                document.getElementById('quiz3Feedback').innerHTML='✅ 恭喜！浮运架梁成功！'; 
-                document.getElementById('quiz3Feedback').className='quiz-feedback correct show';
-                setTimeout(()=>document.getElementById('quiz3Feedback').classList.remove('show'),2500);
-            }
+    const dragSource = document.getElementById('dragSource');
+    const dropTarget = document.getElementById('dropTarget');
+    const completedBridge = document.getElementById('completedBridge');
+    const dragTip = document.getElementById('dragTip');
+    let boatDone = false;
+
+    if (dragSource && dropTarget) {
+        dragSource.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', 'boat');
+        });
+
+        dropTarget.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        dropTarget.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (boatDone) return;
+
+            boatDone = true;
+            dragSource.style.display = 'none';
+            dropTarget.style.display = 'none';
+            completedBridge.style.display = 'block';
+            dragTip.innerHTML = '✅ 广济桥合拢完成！';
+            playSuccess();
+
+            stamps['梭船连接'] = true;
+            stamps['启闭设计'] = true;
+            updateStamps();
+            showAchievement("解锁·启闭式桥梁");
         });
     }
 
-    let boatPlaced=false;
-    const dragBoat=document.getElementById('dragBoat');
-    const gapArea=document.getElementById('bridgeGap');
-    const dragTip=document.getElementById('dragTip');
-    const completedBridge=document.getElementById('completedBridge');
-    const historyNote=document.getElementById('historyNote');
-    if(dragBoat&&gapArea){
-        dragBoat.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain','boat'); dragTip.innerHTML='🔄 正在合拢桥梁...'; });
-        dragBoat.addEventListener('dragend',()=>{ if(!boatPlaced) dragTip.innerHTML='👉 拖动梭船到缺口处'; });
-        gapArea.addEventListener('dragover',e=>e.preventDefault());
-        gapArea.addEventListener('drop',e=>{
+    const dragBeam = document.getElementById('dragBeam');
+    const dropPier = document.getElementById('dropPier');
+    const beamStatusDiv = document.getElementById('beamStatus');
+    const successBox = document.getElementById('successBox');
+    const videoContainer = document.getElementById('videoContainer');
+    let beamSuccess = false;
+
+    if (dragBeam && dropPier) {
+        dragBeam.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', 'beam');
+        });
+
+        dropPier.addEventListener('dragover', (e) => {
             e.preventDefault();
-            if(!boatPlaced){
-                boatPlaced=true;
-                dragBoat.style.display='none';
-                gapArea.style.display='none';
-                completedBridge.style.display='block';
-                dragTip.innerHTML='✅ 广济桥合拢完成！';
-                if(historyNote) historyNote.style.display='block';
-                stamps['梭船连接']=true; stamps['启闭设计']=true;
-                updateStamps(); playSuccess(); showAchievement("解锁·启闭式桥梁");
-            }
+        });
+
+        dropPier.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (beamSuccess) return;
+
+            beamSuccess = true;
+            dragBeam.style.display = 'none';
+            dropPier.style.display = 'none';
+            if (beamStatusDiv) beamStatusDiv.style.display = 'none';
+            successBox.classList.add('show');
+            videoContainer.classList.add('show');
+            playSuccess();
+
+            stamps['浮运架梁'] = true;
+            updateStamps();
+            showAchievement("解锁·浮运架梁");
+            document.getElementById('quiz3Feedback').innerHTML = '✅ 恭喜！浮运架梁成功！';
+            document.getElementById('quiz3Feedback').className = 'quiz-feedback correct show';
+            setTimeout(() => document.getElementById('quiz3Feedback').classList.remove('show'), 2500);
         });
     }
 
@@ -1710,7 +1978,7 @@ function openPavilionImage(event) {
         if(type==='A'){ document.getElementById('endingA').classList.add('active-ending'); currentPlayingAudio = document.getElementById('audioA'); }
         if(type==='B'){ document.getElementById('endingB').classList.add('active-ending'); currentPlayingAudio = document.getElementById('audioB'); }
         if(type==='C'){ document.getElementById('endingC').classList.add('active-ending'); currentPlayingAudio = document.getElementById('audioC'); stamps['启闭设计']=true; updateStamps(); showAchievement("解锁·启闭设计"); }
-        if(currentPlayingAudio && userInteracted) { currentPlayingAudio.currentTime = 0; currentPlayingAudio.play().catch(e=>console.log('音频播放失败',e)); }
+        if(currentPlayingAudio) { currentPlayingAudio.currentTime = 0; currentPlayingAudio.play().catch(e=>console.log('音频播放失败',e)); }
     }
     document.getElementById('endABtn')?.addEventListener('click',()=>showEnding('A'));
     document.getElementById('endBBtn')?.addEventListener('click',()=>showEnding('B'));
@@ -1734,39 +2002,9 @@ function openPavilionImage(event) {
     });
     updateStamps();
 
-    document.querySelectorAll("#page9 .panel").forEach(panel => {
-        panel.addEventListener("click", () => {
-            if (!stamps['石砌工艺']) {
-                stamps['石砌工艺'] = true;
-                updateStamps();
-                showAchievement("解锁·石砌工艺");
-            }
-        });
-    });
-
-    const totalPages = 10;
-    document.querySelectorAll(".page").forEach((page, idx) => {
-        const pageNum = idx + 1;
-        const nextBtn = document.createElement("button");
-        nextBtn.innerText = "下一页 →";
-        nextBtn.className = "comic-btn next-page-btn";
-        nextBtn.style.display = "none";
-
-        nextBtn.onclick = () => {
-            if (pageNum < totalPages) {
-                showPage(pageNum + 1);
-            }
-        };
-        page.appendChild(nextBtn);
-
-        page.onscroll = () => {
-            const atBottom = page.scrollHeight - page.scrollTop <= page.clientHeight + 100;
-            nextBtn.style.display = atBottom ? "block" : "none";
-        };
-    });
-
-    showPage(1);
+    updatePagination();
 })();
 </script>
+
 </body>
 </html>
